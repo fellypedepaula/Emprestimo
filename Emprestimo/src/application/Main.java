@@ -12,7 +12,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			AnchorPane root = new AnchorPane();
-			root = FXMLLoader.load(getClass().getResource("/view/Emprestimo.fxml"));
+			root = FXMLLoader.load(getClass().getResource("/view/vwEmprestimo.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.show();
