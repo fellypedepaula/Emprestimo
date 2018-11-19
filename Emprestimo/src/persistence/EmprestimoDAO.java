@@ -5,11 +5,11 @@ import java.sql.SQLException;
 
 public class EmprestimoDAO {
 
-    private String login = "root";
-    private String senha = "";
+    private String login = "fellype";
+    private String senha = "fellype";
     private String host = "localhost:3306";
     private String dbName = "emprestimo";
-    private String url = "jdbc:mysql://" + host + "/" + dbName;
+    private String url = "jdbc:mysql://" + host + "/" + dbName + "?useTimezone=true&serverTimezone=UTC";
 
     public Connection conexao = null;
 
@@ -19,15 +19,16 @@ public class EmprestimoDAO {
     public Connection abreConexaoBD() {
         try {
             try {
-                Class.forName("com.mysql.jdbc.Driver");
+                Class.forName("com.mysql.cj.jdbc.Driver");
             } catch (ClassNotFoundException ex) {
                 return null;
             }
             try {
-                this.conexao = (Connection) DriverManager.getConnection(url, login, senha);
+            	this.conexao = (Connection)DriverManager.getConnection(url, login, senha );
+                this.conexao = null;
                 System.out.println("funfou");
             } catch (SQLException ex) {
-                System.out.println("nï¿½o funfou" + ex);
+                System.out.println("não funfou " + ex);
                 return null;
             }
             return this.conexao;
