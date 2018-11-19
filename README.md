@@ -15,3 +15,9 @@ CREATE TABLE `emprestimo`.`emprestimo` (
   `TELEFONE` VARCHAR(11) NOT NULL,
   `SEXO` CHAR(1) NOT NULL,
   PRIMARY KEY (`ID`));
+
+  
+  
+  link de apoio
+  
+  https://medium.com/@antonio.gabriel/javafx-trabalhando-com-tableview-5cc1065babab
