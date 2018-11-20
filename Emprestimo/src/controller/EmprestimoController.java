@@ -19,7 +19,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
 import model.EmprestimoModel;
 import javafx.scene.control.Alert.AlertType;
@@ -64,13 +66,12 @@ public class EmprestimoController implements Initializable {
 
 	@FXML
 	private TableColumn<EmprestimoModel, String> nomeCol;
-	
 
-    @FXML
-    private TextField txtAtraso;
+	@FXML
+	private TextField txtAtraso;
 
-    @FXML
-    private TextField pesquisa;
+	@FXML
+	private TextField pesquisa;
 
 //	@FXML
 //	void onSolicitarProposta(ActionEvent event) {
@@ -90,20 +91,20 @@ public class EmprestimoController implements Initializable {
 //	}
 //	
 	ObservableList<EmprestimoModel> oblist = FXCollections.observableArrayList();
-	
-    @FXML
-    void onPesquisar(KeyEvent event) {
+
+	@FXML
+	void onPesquisar(KeyEvent event) {
 		Connection conn;
 		conn = emDao.abreConexaoBD();
-		
+
 		try {
 			tabela.getItems().clear();
 			String query, condicao = pesquisa.getText().toString();
 			query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' OR CPF LIKE '%" + condicao + "%')";
 			System.out.println("tentando executar" + query);
-			
+
 			ResultSet rs = conn.createStatement().executeQuery(query);
-			
+
 			while (rs.next()) {
 				oblist.add(new EmprestimoModel(rs.getString("NOME"), 10, rs.getString("CPF")));
 			}
@@ -111,26 +112,32 @@ public class EmprestimoController implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		selectCol.setCellValueFactory(new PropertyValueFactory<>("selected"));
 		nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
+
+		selectCol.setCellFactory(CheckBoxTableCell.forTableColumn(selectCol));
+
+		nomeCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
 		tabela.setItems(oblist);
-    }
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		Connection conn;
 		conn = emDao.abreConexaoBD();
-		
+
 		try {
-			
+
 			String query, condicao = pesquisa.getText().toString();
-			query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' AND CPF LIKE '%" + condicao + "%')";
+			query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' AND CPF LIKE '%" + condicao
+					+ "%')";
 			System.out.println("tentando executar" + query);
-			
+
 			ResultSet rs = conn.createStatement().executeQuery(query);
-			
+
 			while (rs.next()) {
 				oblist.add(new EmprestimoModel(rs.getString("NOME"), 10, rs.getString("CPF")));
 			}
@@ -138,28 +145,28 @@ public class EmprestimoController implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		selectCol.setCellValueFactory(new PropertyValueFactory<>("selected"));
 		nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
-		
+
+		selectCol.setCellFactory(CheckBoxTableCell.forTableColumn(selectCol));
+		nomeCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
 		tabela.setItems(oblist);
-		
-		
+
 //		selectCol.setCellValueFactory(new PropertyValueFactory<>("selected"));
 //		nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
 //        tabela.setItems(listaDeClientes());
 
 	}
-	
-    private ObservableList<EmprestimoModel> listaDeClientes() {
-        return FXCollections.observableArrayList(
-                new EmprestimoModel("Fellype de Paula Vieira", 28, "Rua Alvenaria 22"),
-                new EmprestimoModel("Nhátaly Maressa de Paula", 19, "Rua São Domingos 108"),
-                new EmprestimoModel("Manoel Pinto Oliveira ", 45, "Rua Valentim 05"),
-                new EmprestimoModel("Cassandra Albuquerque martins", 33, "Rua Palmeira 234"),
-                new EmprestimoModel("Roberto Frimino de Jesus", 69, "Rua Jean Nassif 56"),
-                new EmprestimoModel("Mariana Soares ", 16, "Av Rendeiras 78")
-        );
-    }
+
+	private ObservableList<EmprestimoModel> listaDeClientes() {
+		return FXCollections.observableArrayList(new EmprestimoModel("Fellype de Paula Vieira", 28, "Rua Alvenaria 22"),
+				new EmprestimoModel("Nhátaly Maressa de Paula", 19, "Rua São Domingos 108"),
+				new EmprestimoModel("Manoel Pinto Oliveira ", 45, "Rua Valentim 05"),
+				new EmprestimoModel("Cassandra Albuquerque martins", 33, "Rua Palmeira 234"),
+				new EmprestimoModel("Roberto Frimino de Jesus", 69, "Rua Jean Nassif 56"),
+				new EmprestimoModel("Mariana Soares ", 16, "Av Rendeiras 78"));
+	}
 
 }

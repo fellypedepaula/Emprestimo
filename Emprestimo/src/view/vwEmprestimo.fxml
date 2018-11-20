@@ -30,7 +30,7 @@
             <CheckBox fx:id="isMulher" layoutX="542.0" layoutY="230.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="51.0" text="F" />
             <Label layoutX="416.0" layoutY="174.0" text="Valor" />
             <TextField fx:id="txtValor" layoutX="502.0" layoutY="170.0" prefHeight="25.0" prefWidth="80.0" />
-            <TableView fx:id="tabela" layoutX="14.0" layoutY="272.0" prefHeight="251.0" prefWidth="587.0">
+            <TableView fx:id="tabela" editable="true" layoutX="14.0" layoutY="272.0" prefHeight="251.0" prefWidth="587.0">
               <columns>
                 <TableColumn fx:id="nomeCol" prefWidth="253.0" text="Nome" />
                 <TableColumn minWidth="0.0" prefWidth="162.0" text="Cpf" />
