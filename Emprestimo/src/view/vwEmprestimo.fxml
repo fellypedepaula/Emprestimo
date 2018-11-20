@@ -32,15 +32,15 @@
             <TextField fx:id="txtValor" layoutX="502.0" layoutY="170.0" prefHeight="25.0" prefWidth="80.0" />
             <TableView fx:id="tabela" layoutX="14.0" layoutY="272.0" prefHeight="251.0" prefWidth="587.0">
               <columns>
-                <TableColumn fx:id="nomeCol" prefWidth="294.0" text="Nome" />
-                <TableColumn minWidth="0.0" prefWidth="144.0" text="Cpf" />
-                  <TableColumn prefWidth="89.0" text="Valor" />
+                <TableColumn fx:id="nomeCol" prefWidth="253.0" text="Nome" />
+                <TableColumn minWidth="0.0" prefWidth="162.0" text="Cpf" />
+                  <TableColumn prefWidth="112.0" text="Valor" />
                   <TableColumn fx:id="selectCol" prefWidth="59.0" text="Select" />
               </columns>
             </TableView>
             <Label layoutX="414.0" layoutY="208.0" text="Dias em Atraso" />
             <TextField fx:id="txtAtraso" layoutX="502.0" layoutY="201.0" prefHeight="25.0" prefWidth="80.0" />
-            <TextField fx:id="pesquisa" layoutX="135.0" layoutY="59.0" prefHeight="25.0" prefWidth="351.0" promptText="digite algo para pesquisar &quot;CPF&quot; ou &quot;Nome&quot;&quot;" />
+            <TextField fx:id="pesquisa" layoutX="135.0" layoutY="59.0" onKeyReleased="#onPesquisar" prefHeight="25.0" prefWidth="351.0" promptText="digite algo para pesquisar &quot;CPF&quot; ou &quot;Nome&quot;&quot;" />
             <Label layoutX="36.0" layoutY="63.0" text="Pesquisar" />
          </children>
       </Pane>

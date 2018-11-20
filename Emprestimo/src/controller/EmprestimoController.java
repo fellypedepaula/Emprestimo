@@ -20,6 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import model.EmprestimoModel;
 import javafx.scene.control.Alert.AlertType;
 import persistence.EmprestimoDAO;
@@ -63,6 +64,13 @@ public class EmprestimoController implements Initializable {
 
 	@FXML
 	private TableColumn<EmprestimoModel, String> nomeCol;
+	
+
+    @FXML
+    private TextField txtAtraso;
+
+    @FXML
+    private TextField pesquisa;
 
 //	@FXML
 //	void onSolicitarProposta(ActionEvent event) {
@@ -83,6 +91,31 @@ public class EmprestimoController implements Initializable {
 //	
 	ObservableList<EmprestimoModel> oblist = FXCollections.observableArrayList();
 	
+    @FXML
+    void onPesquisar(KeyEvent event) {
+		Connection conn;
+		conn = emDao.abreConexaoBD();
+		
+		try {
+			tabela.getItems().clear();
+			String query, condicao = pesquisa.getText().toString();
+			query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' OR CPF LIKE '%" + condicao + "%')";
+			System.out.println("tentando executar" + query);
+			
+			ResultSet rs = conn.createStatement().executeQuery(query);
+			
+			while (rs.next()) {
+				oblist.add(new EmprestimoModel(rs.getString("NOME"), 10, rs.getString("CPF")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		selectCol.setCellValueFactory(new PropertyValueFactory<>("selected"));
+		nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
+		tabela.setItems(oblist);
+    }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -91,7 +124,12 @@ public class EmprestimoController implements Initializable {
 		conn = emDao.abreConexaoBD();
 		
 		try {
-			ResultSet rs = conn.createStatement().executeQuery("select * from emprestimo");
+			
+			String query, condicao = pesquisa.getText().toString();
+			query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' AND CPF LIKE '%" + condicao + "%')";
+			System.out.println("tentando executar" + query);
+			
+			ResultSet rs = conn.createStatement().executeQuery(query);
 			
 			while (rs.next()) {
 				oblist.add(new EmprestimoModel(rs.getString("NOME"), 10, rs.getString("CPF")));
