@@ -25,7 +25,6 @@ public class EmprestimoDAO {
             }
             try {
             	this.conexao = (Connection)DriverManager.getConnection(url, login, senha );
-                this.conexao = null;
                 System.out.println("funfou");
             } catch (SQLException ex) {
                 System.out.println("não funfou " + ex);

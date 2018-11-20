@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -16,52 +13,35 @@
    <children>
       <Pane layoutY="-20.0" prefHeight="543.0" prefWidth="607.0">
          <children>
-            <Label layoutX="40.0" layoutY="58.0" text="Nome" />
-            <Label layoutX="40.0" layoutY="88.0" text="Cpf" />
-            <Label layoutX="40.0" layoutY="120.0" text="Dt Nascimento" />
-            <Label layoutX="322.0" layoutY="50.0" prefHeight="31.0" prefWidth="79.0" text="Salário" />
-            <Label layoutX="322.0" layoutY="81.0" prefHeight="31.0" prefWidth="79.0" text="E-mail" />
-            <Label layoutX="322.0" layoutY="112.0" prefHeight="31.0" prefWidth="79.0" text="Telefone" />
-            <TextField fx:id="txtNome" layoutX="134.0" layoutY="54.0" prefHeight="25.0" prefWidth="173.0" />
-            <TextField fx:id="txtCpf" layoutX="134.0" layoutY="84.0" prefHeight="25.0" prefWidth="173.0" />
-            <TextField fx:id="txtSalario" layoutX="375.0" layoutY="53.0" prefHeight="25.0" prefWidth="173.0" />
-            <TextField fx:id="txtEmail" layoutX="375.0" layoutY="84.0" prefHeight="25.0" prefWidth="173.0" />
-            <TextField fx:id="txtTelefone" layoutX="375.0" layoutY="115.0" prefHeight="25.0" prefWidth="173.0" />
-            <Button layoutX="249.0" layoutY="201.0" mnemonicParsing="false" onAction="#onSolicitarProposta" text="Solicitar Proposta" />
-            <DatePicker fx:id="date" layoutX="134.0" layoutY="115.0" />
-            <Label layoutX="42.0" layoutY="150.0" text="Sexo" />
-            <CheckBox fx:id="isHomem" layoutX="134.0" layoutY="150.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="51.0" text="M" />
-            <CheckBox fx:id="isMulher" layoutX="185.0" layoutY="150.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="51.0" text="F" />
-            <Label layoutX="322.0" layoutY="150.0" text="Valor" />
-            <TextField fx:id="txtValor" layoutX="375.0" layoutY="146.0" prefHeight="25.0" prefWidth="173.0" />
-            <TableView fx:id="tabela" layoutX="14.0" layoutY="263.0" prefHeight="200.0" prefWidth="587.0">
+            <Label layoutX="40.0" layoutY="115.0" text="Nome" />
+            <Label layoutX="41.0" layoutY="217.0" text="Cpf" />
+            <Label layoutX="40.0" layoutY="182.0" text="Dt Nascimento" />
+            <Label layoutX="416.0" layoutY="109.0" prefHeight="31.0" prefWidth="79.0" text="Renda Mensal" />
+            <Label layoutX="41.0" layoutY="138.0" prefHeight="31.0" prefWidth="79.0" text="E-mail" />
+            <Label layoutX="416.0" layoutY="138.0" prefHeight="31.0" prefWidth="79.0" text="Telefone" />
+            <TextField fx:id="txtNome" layoutX="134.0" layoutY="111.0" prefHeight="25.0" prefWidth="259.0" />
+            <TextField fx:id="txtCpf" layoutX="135.0" layoutY="213.0" prefHeight="25.0" prefWidth="133.0" />
+            <TextField fx:id="txtSalario" layoutX="502.0" layoutY="112.0" prefHeight="25.0" prefWidth="79.0" />
+            <TextField fx:id="txtEmail" layoutX="135.0" layoutY="141.0" prefHeight="25.0" prefWidth="259.0" />
+            <TextField fx:id="txtTelefone" layoutX="503.0" layoutY="141.0" prefHeight="25.0" prefWidth="79.0" />
+            <DatePicker fx:id="date" layoutX="134.0" layoutY="177.0" prefHeight="25.0" prefWidth="133.0" />
+            <Label layoutX="414.0" layoutY="230.0" text="Sexo" />
+            <CheckBox fx:id="isHomem" layoutX="506.0" layoutY="230.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="51.0" text="M" />
+            <CheckBox fx:id="isMulher" layoutX="542.0" layoutY="230.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="51.0" text="F" />
+            <Label layoutX="416.0" layoutY="174.0" text="Valor" />
+            <TextField fx:id="txtValor" layoutX="502.0" layoutY="170.0" prefHeight="25.0" prefWidth="80.0" />
+            <TableView fx:id="tabela" layoutX="14.0" layoutY="272.0" prefHeight="251.0" prefWidth="587.0">
               <columns>
-                <TableColumn fx:id="nomeCol" prefWidth="53.0" text="Nome" />
-                <TableColumn minWidth="0.0" prefWidth="69.0" text="Cpf" />
-                  <TableColumn prefWidth="93.0" text="Dt Nascimento" />
-                  <TableColumn prefWidth="69.0" text="Salário" />
-                  <TableColumn prefWidth="42.0" text="Email" />
-                  <TableColumn prefWidth="67.0" text="Telefone" />
-                  <TableColumn prefWidth="41.0" text="Sexo" />
-                  <TableColumn prefWidth="36.0" text="Valor" />
-                  <TableColumn prefWidth="62.0" text="Situação" />
-                  <TableColumn fx:id="selectCol" prefWidth="50.0" text="Select" />
+                <TableColumn fx:id="nomeCol" prefWidth="294.0" text="Nome" />
+                <TableColumn minWidth="0.0" prefWidth="144.0" text="Cpf" />
+                  <TableColumn prefWidth="89.0" text="Valor" />
+                  <TableColumn fx:id="selectCol" prefWidth="59.0" text="Select" />
               </columns>
             </TableView>
-            <TabPane layoutX="19.0" layoutY="15.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab text="Simulador">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
-                <Tab text="Dados Pessoais">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
-              </tabs>
-            </TabPane>
+            <Label layoutX="414.0" layoutY="208.0" text="Dias em Atraso" />
+            <TextField fx:id="txtAtraso" layoutX="502.0" layoutY="201.0" prefHeight="25.0" prefWidth="80.0" />
+            <TextField fx:id="pesquisa" layoutX="135.0" layoutY="59.0" prefHeight="25.0" prefWidth="351.0" promptText="digite algo para pesquisar &quot;CPF&quot; ou &quot;Nome&quot;&quot;" />
+            <Label layoutX="36.0" layoutY="63.0" text="Pesquisar" />
          </children>
       </Pane>
    </children>
