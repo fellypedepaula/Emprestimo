@@ -1,11 +1,20 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import persistence.EmprestimoDAO;
+
 public class Emprestimo {
 
-	String nome, email, dataNascimento, cpf, telefone, selected;
+	EmprestimoDAO emprestimoDao = new EmprestimoDAO();
 
-	int idade, diasAtraso;
-	float salario, valor;
+	String nome, valor, email, dataNascimento, cpf, telefone, selected;
+
+	int id, idade, diasAtraso;
+	float salario;
 	boolean isHomem, isMulher;
 
 	public String getNome() {
@@ -64,6 +73,14 @@ public class Emprestimo {
 		this.idade = idade;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public int getDiasAtraso() {
 		return diasAtraso;
 	}
@@ -80,11 +97,11 @@ public class Emprestimo {
 		this.salario = salario;
 	}
 
-	public float getValor() {
+	public String getValor() {
 		return valor;
 	}
 
-	public void setValor(float valor) {
+	public void setValor(String valor) {
 		this.valor = valor;
 	}
 
@@ -102,6 +119,31 @@ public class Emprestimo {
 
 	public void setMulher(boolean isMulher) {
 		this.isMulher = isMulher;
+	}
+
+	public ArrayList<Emprestimo> buscaClientes(String condicao) throws SQLException {
+		Connection conn;
+		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
+		conn = emprestimoDao.abreConexaoBD();
+
+		String query;
+		query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' OR CPF LIKE '%" + condicao + "%')";
+		System.out.println("tentando executar" + query);
+
+		ResultSet rs = conn.createStatement().executeQuery(query);
+
+		while (rs.next()) {
+			Emprestimo emprestimo = new Emprestimo();
+			emprestimo.setId(rs.getInt("ID"));
+			emprestimo.setNome(rs.getString("NOME"));
+			emprestimo.setCpf(rs.getString("CPF"));
+			emprestimo.setValor(rs.getString("SALARIO"));
+			arrayList.add(emprestimo);
+		}
+		emprestimoDao.fechaConexaoBD();
+
+		return arrayList;
+
 	}
 
 }

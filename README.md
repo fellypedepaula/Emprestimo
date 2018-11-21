@@ -15,6 +15,10 @@ CREATE TABLE `emprestimo`.`emprestimo` (
   `TELEFONE` VARCHAR(11) NOT NULL,
   `SEXO` CHAR(1) NOT NULL,
   PRIMARY KEY (`ID`));
+  
+  ALTER TABLE `emprestimo`.`emprestimo` 
+CHANGE COLUMN `SALARIO` `SALARIO` FLOAT NOT NULL ;
+
 
   Script de popular tabela 
   
