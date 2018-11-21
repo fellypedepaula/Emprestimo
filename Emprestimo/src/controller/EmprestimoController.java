@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.Dialog.ModalExclusionType;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,11 +8,8 @@ import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -23,8 +19,7 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
-import model.EmprestimoModel;
-import javafx.scene.control.Alert.AlertType;
+import model.Emprestimo;
 import persistence.EmprestimoDAO;
 
 public class EmprestimoController implements Initializable {
@@ -59,13 +54,19 @@ public class EmprestimoController implements Initializable {
 	private TextField txtValor;
 
 	@FXML
-	private TableView<EmprestimoModel> tabela;
+	private TableView<Emprestimo> tabela;
 
 	@FXML
-	private TableColumn<EmprestimoModel, Boolean> selectCol;
+	private TableColumn<Emprestimo, Boolean> selectCol;
 
 	@FXML
-	private TableColumn<EmprestimoModel, String> nomeCol;
+	private TableColumn<Emprestimo, String> nomeCol;
+	
+	@FXML
+	private TableColumn<Emprestimo, String> colunaCpf;
+
+	@FXML
+	private TableColumn<Emprestimo, String> valorDivida;
 
 	@FXML
 	private TextField txtAtraso;
@@ -90,7 +91,7 @@ public class EmprestimoController implements Initializable {
 //		alert.show();
 //	}
 //	
-	ObservableList<EmprestimoModel> oblist = FXCollections.observableArrayList();
+	ObservableList<Emprestimo> oblist = FXCollections.observableArrayList();
 
 	@FXML
 	void onPesquisar(KeyEvent event) {
@@ -106,7 +107,11 @@ public class EmprestimoController implements Initializable {
 			ResultSet rs = conn.createStatement().executeQuery(query);
 
 			while (rs.next()) {
-				oblist.add(new EmprestimoModel(rs.getString("NOME"), 10, rs.getString("CPF")));
+				Emprestimo emprestimo = new Emprestimo();
+				emprestimo.setNome(rs.getString("NOME"));
+				emprestimo.setCpf(rs.getString("CPF"));
+				emprestimo.setValor(rs.getFloat("SALARIO"));
+				oblist.add(emprestimo);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -139,7 +144,11 @@ public class EmprestimoController implements Initializable {
 			ResultSet rs = conn.createStatement().executeQuery(query);
 
 			while (rs.next()) {
-				oblist.add(new EmprestimoModel(rs.getString("NOME"), 10, rs.getString("CPF")));
+				Emprestimo emprestimo = new Emprestimo();
+				emprestimo.setNome(rs.getString("NOME"));
+				emprestimo.setCpf(rs.getString("CPF"));
+				emprestimo.setValor(rs.getFloat("SALARIO"));
+				oblist.add(emprestimo);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -148,25 +157,14 @@ public class EmprestimoController implements Initializable {
 
 		selectCol.setCellValueFactory(new PropertyValueFactory<>("selected"));
 		nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
+		colunaCpf.setCellValueFactory(new PropertyValueFactory<>("cpf"));
+		valorDivida.setCellValueFactory(new PropertyValueFactory<>("salario"));
 
 		selectCol.setCellFactory(CheckBoxTableCell.forTableColumn(selectCol));
 		nomeCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
 		tabela.setItems(oblist);
 
-//		selectCol.setCellValueFactory(new PropertyValueFactory<>("selected"));
-//		nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
-//        tabela.setItems(listaDeClientes());
-
-	}
-
-	private ObservableList<EmprestimoModel> listaDeClientes() {
-		return FXCollections.observableArrayList(new EmprestimoModel("Fellype de Paula Vieira", 28, "Rua Alvenaria 22"),
-				new EmprestimoModel("Nhátaly Maressa de Paula", 19, "Rua São Domingos 108"),
-				new EmprestimoModel("Manoel Pinto Oliveira ", 45, "Rua Valentim 05"),
-				new EmprestimoModel("Cassandra Albuquerque martins", 33, "Rua Palmeira 234"),
-				new EmprestimoModel("Roberto Frimino de Jesus", 69, "Rua Jean Nassif 56"),
-				new EmprestimoModel("Mariana Soares ", 16, "Av Rendeiras 78"));
 	}
 
 }
