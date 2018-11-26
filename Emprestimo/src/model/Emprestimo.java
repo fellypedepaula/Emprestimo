@@ -11,7 +11,7 @@ public class Emprestimo {
 
 	EmprestimoDAO emprestimoDao = new EmprestimoDAO();
 
-	String nome, valor, email, dataNascimento, cpf, telefone, selected;
+	String nome, valor,email, dataNascimento, cpf, telefone, selected;
 
 	int id, idade, diasAtraso;
 	float salario;
@@ -122,6 +122,7 @@ public class Emprestimo {
 	}
 
 	public ArrayList<Emprestimo> buscaClientes(String condicao) throws SQLException {
+		
 		Connection conn;
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
 		conn = emprestimoDao.abreConexaoBD();
@@ -141,7 +142,6 @@ public class Emprestimo {
 			arrayList.add(emprestimo);
 		}
 		emprestimoDao.fechaConexaoBD();
-
 		return arrayList;
 
 	}
