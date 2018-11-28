@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
@@ -75,6 +76,22 @@ public class EmprestimoController implements Initializable {
 
 	@FXML
 	private TextField pesquisa;
+	
+	@FXML
+    void onExcluir(ActionEvent event) {
+		Emprestimo emprestimo = new Emprestimo();
+		emprestimo.deletaCliente(tabela.getSelectionModel().getSelectedItem().getId());
+    }
+
+    @FXML
+    void onInserirNovo(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onSalvar(ActionEvent event) {
+
+    }
 
 //	@FXML
 //	void onSolicitarProposta(ActionEvent event) {
