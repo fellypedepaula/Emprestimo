@@ -184,12 +184,6 @@ public class Emprestimo {
 		}
 	}
 
-	public void atualizaCliente(int id) {
 
-	}
-
-	public void inserirCliente() {
-
-	}
 
 }

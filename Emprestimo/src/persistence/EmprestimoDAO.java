@@ -42,5 +42,27 @@ public class EmprestimoDAO {
 		return null;
 
 	}
+	
+	public void deletaCliente(int id) {
+		this.conexao = abreConexaoBD();
+		String query;
+		query = "DELETE FROM EMPRESTIMO WHERE ID =" + id + ";";
+		System.out.println("tentando executar" + query);
+
+		try {
+			this.conexao.createStatement().executeUpdate(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void atualizaCliente(int id) {
+
+	}
+
+	public void inserirCliente() {
+
+	}
 
 }

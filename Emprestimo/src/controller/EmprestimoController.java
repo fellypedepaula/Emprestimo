@@ -23,6 +23,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import model.Emprestimo;
+import model.EmprestimoNegocio;
 import persistence.EmprestimoDAO;
 
 public class EmprestimoController implements Initializable {
@@ -79,8 +80,8 @@ public class EmprestimoController implements Initializable {
 	
 	@FXML
     void onExcluir(ActionEvent event) {
-		Emprestimo emprestimo = new Emprestimo();
-		emprestimo.deletaCliente(tabela.getSelectionModel().getSelectedItem().getId());
+		EmprestimoNegocio emprestimoNegocio =  new EmprestimoNegocio();
+		emprestimoNegocio.deletaCliente(tabela.getSelectionModel().getSelectedItem().getId());
     }
 
     @FXML
