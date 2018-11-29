@@ -70,6 +70,7 @@ public class EmprestimoDAO {
 	}
 	
 	
+	
 	public ArrayList<Emprestimo> buscaClientes(String condicao) throws SQLException {
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
 		this.conexao = abreConexaoBD();

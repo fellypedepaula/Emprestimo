@@ -1,15 +1,8 @@
 package model;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 import persistence.EmprestimoDAO;
 
 public class Emprestimo {
-
-	EmprestimoDAO emprestimoDao = new EmprestimoDAO();
 
 	String nome, valor, email, dataNascimento, cpf, telefone, selected;
 
@@ -120,56 +113,5 @@ public class Emprestimo {
 	public void setMulher(boolean isMulher) {
 		this.isMulher = isMulher;
 	}
-
-//	public ArrayList<Emprestimo> buscaClientes(String condicao) throws SQLException {
-//
-//		Connection conn;
-//		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
-//		conn = emprestimoDao.abreConexaoBD();
-//
-//		String query;
-//		query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' OR CPF LIKE '%" + condicao + "%')";
-//		System.out.println("tentando executar" + query);
-//
-//		ResultSet rs = conn.createStatement().executeQuery(query);
-//
-//		while (rs.next()) {
-//			Emprestimo emprestimo = new Emprestimo();
-//			emprestimo.setId(rs.getInt("ID"));
-//			emprestimo.setNome(rs.getString("NOME"));
-//			emprestimo.setCpf(rs.getString("CPF"));
-//			emprestimo.setValor(rs.getString("SALARIO"));
-//			arrayList.add(emprestimo);
-//		}
-//		emprestimoDao.fechaConexaoBD();
-//		return arrayList;
-//
-//	}
-
-//	public ArrayList<Emprestimo> buscaClientePorId(int id) throws SQLException {
-//		Connection conn;
-//		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
-//		conn = emprestimoDao.abreConexaoBD();
-//
-//		String query;
-//		query = "SELECT * FROM EMPRESTIMO WHERE ID =" + id + ";";
-//		System.out.println("tentando executar" + query);
-//
-//		ResultSet rs = conn.createStatement().executeQuery(query);
-//
-//		while (rs.next()) {
-//			Emprestimo emprestimo = new Emprestimo();
-//			emprestimo.setId(rs.getInt("ID"));
-//			emprestimo.setNome(rs.getString("NOME"));
-//			emprestimo.setCpf(rs.getString("CPF"));
-//			emprestimo.setValor(rs.getString("SALARIO"));
-//			arrayList.add(emprestimo);
-//		}
-//		emprestimoDao.fechaConexaoBD();
-//		return arrayList;
-//	}
-
-
-
 
 }
