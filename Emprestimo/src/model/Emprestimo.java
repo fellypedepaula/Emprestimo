@@ -121,68 +121,54 @@ public class Emprestimo {
 		this.isMulher = isMulher;
 	}
 
-	public ArrayList<Emprestimo> buscaClientes(String condicao) throws SQLException {
+//	public ArrayList<Emprestimo> buscaClientes(String condicao) throws SQLException {
+//
+//		Connection conn;
+//		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
+//		conn = emprestimoDao.abreConexaoBD();
+//
+//		String query;
+//		query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' OR CPF LIKE '%" + condicao + "%')";
+//		System.out.println("tentando executar" + query);
+//
+//		ResultSet rs = conn.createStatement().executeQuery(query);
+//
+//		while (rs.next()) {
+//			Emprestimo emprestimo = new Emprestimo();
+//			emprestimo.setId(rs.getInt("ID"));
+//			emprestimo.setNome(rs.getString("NOME"));
+//			emprestimo.setCpf(rs.getString("CPF"));
+//			emprestimo.setValor(rs.getString("SALARIO"));
+//			arrayList.add(emprestimo);
+//		}
+//		emprestimoDao.fechaConexaoBD();
+//		return arrayList;
+//
+//	}
 
-		Connection conn;
-		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
-		conn = emprestimoDao.abreConexaoBD();
+//	public ArrayList<Emprestimo> buscaClientePorId(int id) throws SQLException {
+//		Connection conn;
+//		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
+//		conn = emprestimoDao.abreConexaoBD();
+//
+//		String query;
+//		query = "SELECT * FROM EMPRESTIMO WHERE ID =" + id + ";";
+//		System.out.println("tentando executar" + query);
+//
+//		ResultSet rs = conn.createStatement().executeQuery(query);
+//
+//		while (rs.next()) {
+//			Emprestimo emprestimo = new Emprestimo();
+//			emprestimo.setId(rs.getInt("ID"));
+//			emprestimo.setNome(rs.getString("NOME"));
+//			emprestimo.setCpf(rs.getString("CPF"));
+//			emprestimo.setValor(rs.getString("SALARIO"));
+//			arrayList.add(emprestimo);
+//		}
+//		emprestimoDao.fechaConexaoBD();
+//		return arrayList;
+//	}
 
-		String query;
-		query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' OR CPF LIKE '%" + condicao + "%')";
-		System.out.println("tentando executar" + query);
-
-		ResultSet rs = conn.createStatement().executeQuery(query);
-
-		while (rs.next()) {
-			Emprestimo emprestimo = new Emprestimo();
-			emprestimo.setId(rs.getInt("ID"));
-			emprestimo.setNome(rs.getString("NOME"));
-			emprestimo.setCpf(rs.getString("CPF"));
-			emprestimo.setValor(rs.getString("SALARIO"));
-			arrayList.add(emprestimo);
-		}
-		emprestimoDao.fechaConexaoBD();
-		return arrayList;
-
-	}
-
-	public ArrayList<Emprestimo> buscaClientePorId(int id) throws SQLException {
-		Connection conn;
-		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
-		conn = emprestimoDao.abreConexaoBD();
-
-		String query;
-		query = "SELECT * FROM EMPRESTIMO WHERE ID =" + id + ";";
-		System.out.println("tentando executar" + query);
-
-		ResultSet rs = conn.createStatement().executeQuery(query);
-
-		while (rs.next()) {
-			Emprestimo emprestimo = new Emprestimo();
-			emprestimo.setId(rs.getInt("ID"));
-			emprestimo.setNome(rs.getString("NOME"));
-			emprestimo.setCpf(rs.getString("CPF"));
-			emprestimo.setValor(rs.getString("SALARIO"));
-			arrayList.add(emprestimo);
-		}
-		emprestimoDao.fechaConexaoBD();
-		return arrayList;
-	}
-
-	public void deletaCliente(int id) {
-		Connection conn;
-		conn = emprestimoDao.abreConexaoBD();
-		String query;
-		query = "DELETE FROM EMPRESTIMO WHERE ID =" + id + ";";
-		System.out.println("tentando executar" + query);
-
-		try {
-			conn.createStatement().executeUpdate(query);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 
 

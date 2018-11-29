@@ -191,7 +191,7 @@ public class EmprestimoController implements Initializable {
 
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
 		try {
-			Emprestimo emprestimo = new Emprestimo();
+			EmprestimoDAO emprestimo = new EmprestimoDAO();
 			System.out.println("inicio" + arrayList);
 
 			arrayList = emprestimo.buscaClientes(condicao);

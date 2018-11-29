@@ -2,7 +2,11 @@ package persistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import model.Emprestimo;
 
 public class EmprestimoDAO {
 
@@ -63,6 +67,52 @@ public class EmprestimoDAO {
 
 	public void inserirCliente() {
 
+	}
+	
+	
+	public ArrayList<Emprestimo> buscaClientes(String condicao) throws SQLException {
+		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
+		this.conexao = abreConexaoBD();
+
+		String query;
+		query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' OR CPF LIKE '%" + condicao + "%')";
+		System.out.println("tentando executar" + query);
+
+		ResultSet rs = this.conexao.createStatement().executeQuery(query);
+
+		while (rs.next()) {
+			Emprestimo emprestimo = new Emprestimo();
+			emprestimo.setId(rs.getInt("ID"));
+			emprestimo.setNome(rs.getString("NOME"));
+			emprestimo.setCpf(rs.getString("CPF"));
+			emprestimo.setValor(rs.getString("SALARIO"));
+			arrayList.add(emprestimo);
+		}
+		this.conexao = fechaConexaoBD();
+		return arrayList;
+
+	}
+	
+	public ArrayList<Emprestimo> buscaClientePorId(int id) throws SQLException {
+		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
+		this.conexao = abreConexaoBD();
+
+		String query;
+		query = "SELECT * FROM EMPRESTIMO WHERE ID =" + id + ";";
+		System.out.println("tentando executar" + query);
+
+		ResultSet rs = this.conexao.createStatement().executeQuery(query);
+
+		while (rs.next()) {
+			Emprestimo emprestimo = new Emprestimo();
+			emprestimo.setId(rs.getInt("ID"));
+			emprestimo.setNome(rs.getString("NOME"));
+			emprestimo.setCpf(rs.getString("CPF"));
+			emprestimo.setValor(rs.getString("SALARIO"));
+			arrayList.add(emprestimo);
+		}
+		this.conexao = fechaConexaoBD();
+		return arrayList;
 	}
 
 }
