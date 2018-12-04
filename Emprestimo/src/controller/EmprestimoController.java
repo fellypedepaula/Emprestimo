@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -79,17 +80,35 @@ public class EmprestimoController implements Initializable {
 	void onExcluir(ActionEvent event) throws SQLException {
 		EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
 		emprestimoNegocio.deletaCliente(tabela.getSelectionModel().getSelectedItem().getId());
+		limparFormulario();
 		listarClientes();
 
 	}
 
 	@FXML
 	void onInserirNovo(ActionEvent event) {
+		limparFormulario();
+		txtNome.requestFocus();
 
 	}
 
 	@FXML
-	void onSalvar(ActionEvent event) {
+	void onSalvar(ActionEvent event) throws SQLException {
+		EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
+		Emprestimo emprestimo = new Emprestimo();
+
+		emprestimo.setCpf(txtCpf.getText());
+		emprestimo.setNome(txtNome.getText());
+		emprestimo.setEmail(txtEmail.getText());
+		emprestimo.setDataNascimento(txtDate.getAccessibleText());
+		emprestimo.setSalario(Float.valueOf(txtSalario.getText()));
+		emprestimo.setTelefone(txtTelefone.getText());
+		emprestimo.setValor(Float.valueOf(txtValor.getText()));
+		emprestimo.setDiasAtraso(Integer.valueOf(txtAtraso.getText()));
+
+		emprestimoNegocio.inserirCliente(emprestimo);
+		
+		listarClientes();
 
 	}
 
@@ -144,11 +163,18 @@ public class EmprestimoController implements Initializable {
 		arrayList = emprestimoNegocio.buscarClientes(condicao);
 
 		for (int i = 0; i < arrayList.size(); i++) {
+			System.out.println("Array " + arrayList.get(i).getDataNascimento());
+
 			Emprestimo emprestimo = new Emprestimo();
 			emprestimo.setId(arrayList.get(i).getId());
 			emprestimo.setNome(arrayList.get(i).getNome());
 			emprestimo.setCpf(arrayList.get(i).getCpf());
 			emprestimo.setValor(arrayList.get(i).getValor());
+			emprestimo.setEmail(arrayList.get(i).getEmail());
+			emprestimo.setTelefone(arrayList.get(i).getTelefone());
+			emprestimo.setSalario(arrayList.get(i).getSalario());
+			emprestimo.setSexo(arrayList.get(i).getSexo());
+//			emprestimo.setDataNascimento(util.() arrayList.get(i).getDataNascimento());
 			oblist.add(emprestimo);
 			tabela.setItems(oblist);
 		}
@@ -161,14 +187,42 @@ public class EmprestimoController implements Initializable {
 	}
 
 	public void preencherFormulario(Emprestimo emprestimo) {
+
+		System.out.println("emprestimo " + emprestimo.getValor() + "salario " + emprestimo.getSalario());
+
 		txtNome.setText(emprestimo.getNome());
 		txtEmail.setText(emprestimo.getEmail());
 		txtCpf.setText(emprestimo.getCpf());
 		txtDate.setAccessibleText(emprestimo.getDataNascimento());
 		txtSalario.setText(toString(emprestimo.getSalario()));
 		txtTelefone.setText(emprestimo.getTelefone());
-		txtValor.setText(emprestimo.getValor());
+		txtValor.setText(toString(emprestimo.getValor()));
+		txtValor.setText(toString(emprestimo.getValor()));
 		txtAtraso.setText(toString(emprestimo.getDiasAtraso()));
+		verificaSexo(emprestimo.getSexo());
+	}
+
+	public void limparFormulario() {
+		txtNome.setText("");
+		txtEmail.setText("");
+		txtCpf.setText("");
+		txtDate.setAccessibleText("");
+		txtSalario.setText("");
+		txtTelefone.setText("");
+		txtValor.setText("");
+		txtAtraso.setText("");
+
+	}
+	
+	public void verificaSexo(String sexo) {
+		if (sexo == "M") {
+			isHomem.setSelected(true);
+			isMulher.setSelected(false);
+
+		}else {
+			isMulher.setSelected(true);
+			isHomem.setSelected(false);
+		}
 	}
 
 	private String toString(float salario) {

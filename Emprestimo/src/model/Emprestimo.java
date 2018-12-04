@@ -1,14 +1,12 @@
 package model;
 
-import persistence.EmprestimoDAO;
 
 public class Emprestimo {
 
-	String nome, valor, email, dataNascimento, cpf, telefone, selected;
+	String nome, email, dataNascimento, cpf, telefone, sexo, selected;
 
 	int id, idade, diasAtraso;
-	float salario;
-	boolean isHomem, isMulher;
+	float salario, valor;
 
 	public String getNome() {
 		return nome;
@@ -78,6 +76,14 @@ public class Emprestimo {
 		return diasAtraso;
 	}
 
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
 	public void setDiasAtraso(int diasAtraso) {
 		this.diasAtraso = diasAtraso;
 	}
@@ -90,28 +96,14 @@ public class Emprestimo {
 		this.salario = salario;
 	}
 
-	public String getValor() {
+	public Float getValor() {
 		return valor;
 	}
 
-	public void setValor(String valor) {
+	public void setValor(Float valor) {
 		this.valor = valor;
 	}
 
-	public boolean isHomem() {
-		return isHomem;
-	}
 
-	public void setHomem(boolean isHomem) {
-		this.isHomem = isHomem;
-	}
-
-	public boolean isMulher() {
-		return isMulher;
-	}
-
-	public void setMulher(boolean isMulher) {
-		this.isMulher = isMulher;
-	}
 
 }

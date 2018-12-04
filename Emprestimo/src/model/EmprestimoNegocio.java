@@ -19,6 +19,11 @@ public class EmprestimoNegocio {
 		arrayList = emprestimoDAO.buscaClientes(condicao);
 		return arrayList;
 	}
+	
+	public void inserirCliente(Emprestimo emprestimo) {
+		EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+		emprestimoDAO.inserirCliente(emprestimo);
+	}
 
 
 }

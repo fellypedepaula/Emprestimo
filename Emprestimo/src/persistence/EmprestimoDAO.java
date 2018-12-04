@@ -1,6 +1,7 @@
 package persistence;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,7 +47,7 @@ public class EmprestimoDAO {
 		return null;
 
 	}
-	
+
 	public void deletaCliente(int id) {
 		this.conexao = abreConexaoBD();
 		String query;
@@ -60,17 +61,29 @@ public class EmprestimoDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void atualizaCliente(int id) {
 
 	}
 
-	public void inserirCliente() {
+	public void inserirCliente(Emprestimo emprestimo) {
+		this.conexao =  abreConexaoBD();
+		String query, virgula = ",", isString = "'";
+		query = "INSERT INTO EMPRESTIMO (NOME, CPF, SALARIO, EMAIL, DT_NASCIMENTO, VALOR, TELEFONE, SEXO) VALUES("
+			    + isString + emprestimo.getNome() + isString + virgula + isString + emprestimo.getCpf() + isString + virgula + emprestimo.getSalario()  + virgula + isString
+				+ emprestimo.getEmail()  + isString + virgula + "'20180212'" + virgula + emprestimo.getValor() + virgula
+				+ isString + emprestimo.getTelefone() + isString + virgula +isString + "M" + isString + ");";
+		System.out.println("tentativa de inclusão" + query);
+		
+		try {
+			ResultSet rs = this.conexao.createStatement().executeQuery(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
-	
-	
-	
+
 	public ArrayList<Emprestimo> buscaClientes(String condicao) throws SQLException {
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
 		this.conexao = abreConexaoBD();
@@ -86,14 +99,19 @@ public class EmprestimoDAO {
 			emprestimo.setId(rs.getInt("ID"));
 			emprestimo.setNome(rs.getString("NOME"));
 			emprestimo.setCpf(rs.getString("CPF"));
-			emprestimo.setValor(rs.getString("SALARIO"));
+			emprestimo.setValor(Float.valueOf(rs.getString("VALOR")));
+			emprestimo.setSalario(Float.valueOf(rs.getString("SALARIO")));
+			emprestimo.setDataNascimento(rs.getString("DT_NASCIMENTO"));
+			emprestimo.setEmail(rs.getString("EMAIL"));
+			emprestimo.setTelefone(rs.getString("TELEFONE"));
+			emprestimo.setSexo(rs.getString("SEXO"));
 			arrayList.add(emprestimo);
 		}
 		this.conexao = fechaConexaoBD();
 		return arrayList;
 
 	}
-	
+
 	public ArrayList<Emprestimo> buscaClientePorId(int id) throws SQLException {
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
 		this.conexao = abreConexaoBD();
@@ -109,7 +127,10 @@ public class EmprestimoDAO {
 			emprestimo.setId(rs.getInt("ID"));
 			emprestimo.setNome(rs.getString("NOME"));
 			emprestimo.setCpf(rs.getString("CPF"));
-			emprestimo.setValor(rs.getString("SALARIO"));
+//			emprestimo.setValor(rs.getString("SALARIO"));
+			emprestimo.setDataNascimento(rs.getString("DT_NASCIMENTO"));
+			emprestimo.setEmail(rs.getString("EMAIL"));
+			emprestimo.setTelefone(rs.getString("TELEFONE"));
 			arrayList.add(emprestimo);
 		}
 		this.conexao = fechaConexaoBD();
