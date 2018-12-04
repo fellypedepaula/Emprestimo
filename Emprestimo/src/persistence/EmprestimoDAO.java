@@ -61,21 +61,22 @@ public class EmprestimoDAO {
 		}
 	}
 
-	public void atualizaCliente(int id) {
-
+	public void atualizaCliente(Emprestimo emprestimo, int id) {
 	}
+	
 
 	public void inserirCliente(Emprestimo emprestimo) {
-		this.conexao =  abreConexaoBD();
+		this.conexao = abreConexaoBD();
 		String query, virgula = ",", isString = "'";
 		query = "INSERT INTO EMPRESTIMO (NOME, CPF, SALARIO, EMAIL, DT_NASCIMENTO, VALOR, TELEFONE, SEXO) VALUES("
-			    + isString + emprestimo.getNome() + isString + virgula + isString + emprestimo.getCpf() + isString + virgula + emprestimo.getSalario()  + virgula + isString
-				+ emprestimo.getEmail()  + isString + virgula + "'20180212'" + virgula + emprestimo.getValor() + virgula
-				+ isString + emprestimo.getTelefone() + isString + virgula +isString + "M" + isString + ");";
+				+ isString + emprestimo.getNome() + isString + virgula + isString + emprestimo.getCpf() + isString
+				+ virgula + emprestimo.getSalario() + virgula + isString + emprestimo.getEmail() + isString + virgula
+				+ "'20180212'" + virgula + emprestimo.getValor() + virgula + isString + emprestimo.getTelefone()
+				+ isString + virgula + isString + emprestimo.getSexo() + isString + ");";
 		System.out.println("tentativa de inclusão" + query);
-		
+
 		try {
-			ResultSet rs = this.conexao.createStatement().executeQuery(query);
+			this.conexao.createStatement().executeUpdate(query);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

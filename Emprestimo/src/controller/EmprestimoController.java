@@ -94,6 +94,10 @@ public class EmprestimoController implements Initializable {
 
 	@FXML
 	void onSalvar(ActionEvent event) throws SQLException {
+		
+		System.out.println("Se"  + tabela.getSelectionModel().getSelectedItem().getSexo());
+		System.out.println("Verifica"  + verificaSexo(tabela.getSelectionModel().getSelectedItem().getSexo()));
+		
 		EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
 		Emprestimo emprestimo = new Emprestimo();
 
@@ -105,6 +109,7 @@ public class EmprestimoController implements Initializable {
 		emprestimo.setTelefone(txtTelefone.getText());
 		emprestimo.setValor(Float.valueOf(txtValor.getText()));
 		emprestimo.setDiasAtraso(Integer.valueOf(txtAtraso.getText()));
+		emprestimo.setSexo(verificaSexo(tabela.getSelectionModel().getSelectedItem().getSexo()));
 
 		emprestimoNegocio.inserirCliente(emprestimo);
 		
@@ -127,6 +132,7 @@ public class EmprestimoController implements Initializable {
 			emprestimo.setTelefone(tabela.getSelectionModel().getSelectedItem().getTelefone());
 			emprestimo.setValor(tabela.getSelectionModel().getSelectedItem().getValor());
 			emprestimo.setDiasAtraso(tabela.getSelectionModel().getSelectedItem().getDiasAtraso());
+			emprestimo.setSexo(tabela.getSelectionModel().getSelectedItem().getSexo());
 
 			preencherFormulario(emprestimo);
 		}
@@ -163,7 +169,7 @@ public class EmprestimoController implements Initializable {
 		arrayList = emprestimoNegocio.buscarClientes(condicao);
 
 		for (int i = 0; i < arrayList.size(); i++) {
-			System.out.println("Array " + arrayList.get(i).getDataNascimento());
+			System.out.println("Array " + arrayList.get(i).getSexo());
 
 			Emprestimo emprestimo = new Emprestimo();
 			emprestimo.setId(arrayList.get(i).getId());
@@ -173,7 +179,7 @@ public class EmprestimoController implements Initializable {
 			emprestimo.setEmail(arrayList.get(i).getEmail());
 			emprestimo.setTelefone(arrayList.get(i).getTelefone());
 			emprestimo.setSalario(arrayList.get(i).getSalario());
-			emprestimo.setSexo(arrayList.get(i).getSexo());
+			emprestimo.setSexo(arrayList.get(i).getSexo().toString());
 //			emprestimo.setDataNascimento(util.() arrayList.get(i).getDataNascimento());
 			oblist.add(emprestimo);
 			tabela.setItems(oblist);
@@ -214,14 +220,19 @@ public class EmprestimoController implements Initializable {
 
 	}
 	
-	public void verificaSexo(String sexo) {
-		if (sexo == "M") {
+	public String verificaSexo(String sexo) {
+		
+		System.out.println("sexo" + sexo ) ;
+		
+		if (sexo == "M" || sexo == "m") {
 			isHomem.setSelected(true);
 			isMulher.setSelected(false);
+			return sexo = "M";
 
 		}else {
 			isMulher.setSelected(true);
 			isHomem.setSelected(false);
+			return sexo = "F";
 		}
 	}
 
