@@ -99,12 +99,13 @@ public class EmprestimoDAO {
 			emprestimo.setId(rs.getInt("ID"));
 			emprestimo.setNome(rs.getString("NOME"));
 			emprestimo.setCpf(rs.getString("CPF"));
-			emprestimo.setValor(Float.valueOf(rs.getString("VALOR")));
-			emprestimo.setSalario(Float.valueOf(rs.getString("SALARIO")));
-			emprestimo.setDataNascimento(rs.getString("DT_NASCIMENTO"));
+			emprestimo.setValor(rs.getFloat("VALOR"));
+			emprestimo.setSalario(rs.getFloat("SALARIO"));
+//			emprestimo.setDataNascimento(rs.getDate("DT_NASCIMENTO"));
 			emprestimo.setEmail(rs.getString("EMAIL"));
 			emprestimo.setTelefone(rs.getString("TELEFONE"));
 			emprestimo.setSexo(rs.getString("SEXO"));
+			emprestimo.setDiasAtraso(rs.getInt("ATRASO"));
 			arrayList.add(emprestimo);
 		}
 		this.conexao = fechaConexaoBD();
@@ -128,7 +129,7 @@ public class EmprestimoDAO {
 			emprestimo.setNome(rs.getString("NOME"));
 			emprestimo.setCpf(rs.getString("CPF"));
 //			emprestimo.setValor(rs.getString("SALARIO"));
-			emprestimo.setDataNascimento(rs.getString("DT_NASCIMENTO"));
+//			emprestimo.setDataNascimento(rs.getString("DT_NASCIMENTO"));
 			emprestimo.setEmail(rs.getString("EMAIL"));
 			emprestimo.setTelefone(rs.getString("TELEFONE"));
 			arrayList.add(emprestimo);

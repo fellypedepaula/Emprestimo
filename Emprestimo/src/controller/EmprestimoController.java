@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -94,25 +93,21 @@ public class EmprestimoController implements Initializable {
 
 	@FXML
 	void onSalvar(ActionEvent event) throws SQLException {
-		
-		System.out.println("Se"  + tabela.getSelectionModel().getSelectedItem().getSexo());
-		System.out.println("Verifica"  + verificaSexo(tabela.getSelectionModel().getSelectedItem().getSexo()));
-		
+
 		EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
 		Emprestimo emprestimo = new Emprestimo();
 
 		emprestimo.setCpf(txtCpf.getText());
 		emprestimo.setNome(txtNome.getText());
 		emprestimo.setEmail(txtEmail.getText());
-		emprestimo.setDataNascimento(txtDate.getAccessibleText());
+//		emprestimo.setDataNascimento(txtDate.getAccessibleText());
 		emprestimo.setSalario(Float.valueOf(txtSalario.getText()));
 		emprestimo.setTelefone(txtTelefone.getText());
 		emprestimo.setValor(Float.valueOf(txtValor.getText()));
 		emprestimo.setDiasAtraso(Integer.valueOf(txtAtraso.getText()));
-		emprestimo.setSexo(verificaSexo(tabela.getSelectionModel().getSelectedItem().getSexo()));
 
 		emprestimoNegocio.inserirCliente(emprestimo);
-		
+
 		listarClientes();
 
 	}
@@ -120,6 +115,7 @@ public class EmprestimoController implements Initializable {
 	@FXML
 	public void clickItem(MouseEvent event) {
 		System.out.println("evento" + event.getClickCount());
+
 		if (event.getClickCount() == 1) // Checking double click
 		{
 
@@ -127,13 +123,13 @@ public class EmprestimoController implements Initializable {
 			emprestimo.setCpf(tabela.getSelectionModel().getSelectedItem().getCpf());
 			emprestimo.setNome(tabela.getSelectionModel().getSelectedItem().getNome());
 			emprestimo.setEmail(tabela.getSelectionModel().getSelectedItem().getEmail());
-			emprestimo.setDataNascimento(tabela.getSelectionModel().getSelectedItem().getDataNascimento());
+//			emprestimo.setDataNascimento(tabela.getSelectionModel().getSelectedItem().getDataNascimento());
 			emprestimo.setSalario(tabela.getSelectionModel().getSelectedItem().getSalario());
 			emprestimo.setTelefone(tabela.getSelectionModel().getSelectedItem().getTelefone());
 			emprestimo.setValor(tabela.getSelectionModel().getSelectedItem().getValor());
 			emprestimo.setDiasAtraso(tabela.getSelectionModel().getSelectedItem().getDiasAtraso());
 			emprestimo.setSexo(tabela.getSelectionModel().getSelectedItem().getSexo());
-
+//			emprestimo.setDataNascimento(tabela.getSelectionModel().getSelectedItem().getDataNascimento());
 			preencherFormulario(emprestimo);
 		}
 	}
@@ -152,7 +148,6 @@ public class EmprestimoController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
 		try {
 			listarClientes();
 		} catch (SQLException e) {
@@ -179,8 +174,9 @@ public class EmprestimoController implements Initializable {
 			emprestimo.setEmail(arrayList.get(i).getEmail());
 			emprestimo.setTelefone(arrayList.get(i).getTelefone());
 			emprestimo.setSalario(arrayList.get(i).getSalario());
-			emprestimo.setSexo(arrayList.get(i).getSexo().toString());
-//			emprestimo.setDataNascimento(util.() arrayList.get(i).getDataNascimento());
+			emprestimo.setSexo(arrayList.get(i).getSexo());
+			emprestimo.setDiasAtraso(arrayList.get(i).getDiasAtraso());
+//			emprestimo.setDataNascimento(arrayList.get(i).getDataNascimento());
 			oblist.add(emprestimo);
 			tabela.setItems(oblist);
 		}
@@ -194,18 +190,19 @@ public class EmprestimoController implements Initializable {
 
 	public void preencherFormulario(Emprestimo emprestimo) {
 
-		System.out.println("emprestimo " + emprestimo.getValor() + "salario " + emprestimo.getSalario());
+		System.out.println("emprestimo " + emprestimo.getValor() + "salario " + emprestimo.getSalario() + "sexo "
+				+ emprestimo.getSexo() + "dias " + emprestimo.getDiasAtraso());
 
 		txtNome.setText(emprestimo.getNome());
 		txtEmail.setText(emprestimo.getEmail());
 		txtCpf.setText(emprestimo.getCpf());
-		txtDate.setAccessibleText(emprestimo.getDataNascimento());
-		txtSalario.setText(toString(emprestimo.getSalario()));
+//		txtDate.setAccessibleText(String.valueOf(emprestimo.getDataNascimento()));
+		txtSalario.setText(String.valueOf(emprestimo.getSalario()));
 		txtTelefone.setText(emprestimo.getTelefone());
-		txtValor.setText(toString(emprestimo.getValor()));
-		txtValor.setText(toString(emprestimo.getValor()));
-		txtAtraso.setText(toString(emprestimo.getDiasAtraso()));
-		verificaSexo(emprestimo.getSexo());
+		txtValor.setText(String.valueOf(emprestimo.getValor()));
+		txtAtraso.setText(String.valueOf(emprestimo.getDiasAtraso()));
+		verificaSexo(emprestimo.getSexo().toString());
+
 	}
 
 	public void limparFormulario() {
@@ -219,26 +216,20 @@ public class EmprestimoController implements Initializable {
 		txtAtraso.setText("");
 
 	}
-	
-	public String verificaSexo(String sexo) {
-		
-		System.out.println("sexo" + sexo ) ;
-		
-		if (sexo == "M" || sexo == "m") {
+
+	public void verificaSexo(String sexo) {
+
+		System.out.println("sexo verificacao" + sexo);
+
+		if (sexo.equals("M")) {
 			isHomem.setSelected(true);
 			isMulher.setSelected(false);
-			return sexo = "M";
 
-		}else {
+		} else {
 			isMulher.setSelected(true);
 			isHomem.setSelected(false);
-			return sexo = "F";
 		}
 	}
 
-	private String toString(float salario) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
