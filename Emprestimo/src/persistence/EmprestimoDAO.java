@@ -68,11 +68,11 @@ public class EmprestimoDAO {
 	public void inserirCliente(Emprestimo emprestimo) {
 		this.conexao = abreConexaoBD();
 		String query, virgula = ",", isString = "'";
-		query = "INSERT INTO EMPRESTIMO (NOME, CPF, SALARIO, EMAIL, DT_NASCIMENTO, VALOR, TELEFONE, SEXO) VALUES("
+		query = "INSERT INTO EMPRESTIMO (NOME, CPF, SALARIO, EMAIL, DT_NASCIMENTO, VALOR, TELEFONE, SEXO, ATRASO) VALUES("
 				+ isString + emprestimo.getNome() + isString + virgula + isString + emprestimo.getCpf() + isString
 				+ virgula + emprestimo.getSalario() + virgula + isString + emprestimo.getEmail() + isString + virgula
 				+ "'20180212'" + virgula + emprestimo.getValor() + virgula + isString + emprestimo.getTelefone()
-				+ isString + virgula + isString + emprestimo.getSexo() + isString + ");";
+				+ isString + virgula + isString + emprestimo.getSexo() + isString + virgula + emprestimo.getDiasAtraso() +  ");";
 		System.out.println("tentativa de inclusão" + query);
 
 		try {
@@ -93,19 +93,25 @@ public class EmprestimoDAO {
 		System.out.println("tentando executar" + query);
 
 		ResultSet rs = this.conexao.createStatement().executeQuery(query);
+		
+
+		
 
 		while (rs.next()) {
+			System.out.println("data nascimento" + rs.getDate("DT_NASCIMENTO").toString());
+			
 			Emprestimo emprestimo = new Emprestimo();
 			emprestimo.setId(rs.getInt("ID"));
 			emprestimo.setNome(rs.getString("NOME"));
 			emprestimo.setCpf(rs.getString("CPF"));
 			emprestimo.setValor(rs.getFloat("VALOR"));
 			emprestimo.setSalario(rs.getFloat("SALARIO"));
-//			emprestimo.setDataNascimento(rs.getDate("DT_NASCIMENTO"));
+			emprestimo.setDataNascimento(rs.getDate("DT_NASCIMENTO").toString());
 			emprestimo.setEmail(rs.getString("EMAIL"));
 			emprestimo.setTelefone(rs.getString("TELEFONE"));
 			emprestimo.setSexo(rs.getString("SEXO"));
 			emprestimo.setDiasAtraso(rs.getInt("ATRASO"));
+			
 			arrayList.add(emprestimo);
 		}
 		this.conexao = fechaConexaoBD();

@@ -1,12 +1,9 @@
 package model;
 
-import java.sql.Date;
 
 public class Emprestimo {
 
-	String nome, email, cpf, telefone, sexo, selected;
-	
-	Date dataNascimento;
+	String nome, email, dataNascimento, cpf, telefone, sexo, selected;
 
 	int id, idade, diasAtraso;
 	float salario, valor;
@@ -27,12 +24,12 @@ public class Emprestimo {
 		this.email = email;
 	}
 
-	public Date getDataNascimento() {
+	public String getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date date) {
-		this.dataNascimento = date;
+	public void setDataNascimento(String dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 
 	public String getCpf() {

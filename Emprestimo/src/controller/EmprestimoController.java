@@ -100,10 +100,11 @@ public class EmprestimoController implements Initializable {
 		emprestimo.setCpf(txtCpf.getText());
 		emprestimo.setNome(txtNome.getText());
 		emprestimo.setEmail(txtEmail.getText());
-//		emprestimo.setDataNascimento(txtDate.getAccessibleText());
+		emprestimo.setDataNascimento(txtDate.getPromptText());
 		emprestimo.setSalario(Float.valueOf(txtSalario.getText()));
 		emprestimo.setTelefone(txtTelefone.getText());
 		emprestimo.setValor(Float.valueOf(txtValor.getText()));
+		emprestimo.setSexo("M");
 		emprestimo.setDiasAtraso(Integer.valueOf(txtAtraso.getText()));
 
 		emprestimoNegocio.inserirCliente(emprestimo);
@@ -129,7 +130,7 @@ public class EmprestimoController implements Initializable {
 			emprestimo.setValor(tabela.getSelectionModel().getSelectedItem().getValor());
 			emprestimo.setDiasAtraso(tabela.getSelectionModel().getSelectedItem().getDiasAtraso());
 			emprestimo.setSexo(tabela.getSelectionModel().getSelectedItem().getSexo());
-//			emprestimo.setDataNascimento(tabela.getSelectionModel().getSelectedItem().getDataNascimento());
+			emprestimo.setDataNascimento(tabela.getSelectionModel().getSelectedItem().getDataNascimento());
 			preencherFormulario(emprestimo);
 		}
 	}
@@ -148,6 +149,9 @@ public class EmprestimoController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+//		txtDate.setValue(LocalDate.now());
+
 		try {
 			listarClientes();
 		} catch (SQLException e) {
@@ -176,7 +180,7 @@ public class EmprestimoController implements Initializable {
 			emprestimo.setSalario(arrayList.get(i).getSalario());
 			emprestimo.setSexo(arrayList.get(i).getSexo());
 			emprestimo.setDiasAtraso(arrayList.get(i).getDiasAtraso());
-//			emprestimo.setDataNascimento(arrayList.get(i).getDataNascimento());
+			emprestimo.setDataNascimento(arrayList.get(i).getDataNascimento());
 			oblist.add(emprestimo);
 			tabela.setItems(oblist);
 		}
@@ -191,18 +195,20 @@ public class EmprestimoController implements Initializable {
 	public void preencherFormulario(Emprestimo emprestimo) {
 
 		System.out.println("emprestimo " + emprestimo.getValor() + "salario " + emprestimo.getSalario() + "sexo "
-				+ emprestimo.getSexo() + "dias " + emprestimo.getDiasAtraso());
+				+ emprestimo.getSexo() + "dias " + emprestimo.getDiasAtraso() + "date "
+				+ emprestimo.getDataNascimento());
 
 		txtNome.setText(emprestimo.getNome());
 		txtEmail.setText(emprestimo.getEmail());
 		txtCpf.setText(emprestimo.getCpf());
-//		txtDate.setAccessibleText(String.valueOf(emprestimo.getDataNascimento()));
+		txtDate.setPromptText(emprestimo.getDataNascimento());
 		txtSalario.setText(String.valueOf(emprestimo.getSalario()));
 		txtTelefone.setText(emprestimo.getTelefone());
 		txtValor.setText(String.valueOf(emprestimo.getValor()));
 		txtAtraso.setText(String.valueOf(emprestimo.getDiasAtraso()));
 		verificaSexo(emprestimo.getSexo().toString());
-
+		
+		
 	}
 
 	public void limparFormulario() {
@@ -230,6 +236,5 @@ public class EmprestimoController implements Initializable {
 			isHomem.setSelected(false);
 		}
 	}
-
 
 }
