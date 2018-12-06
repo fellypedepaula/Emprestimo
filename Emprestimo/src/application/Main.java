@@ -10,6 +10,8 @@ import javafx.scene.layout.AnchorPane;
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
+		primaryStage.setTitle("Empréstimo");
+
 		try {
 			AnchorPane root = new AnchorPane();
 			root = FXMLLoader.load(getClass().getResource("/view/vwEmprestimo.fxml"));

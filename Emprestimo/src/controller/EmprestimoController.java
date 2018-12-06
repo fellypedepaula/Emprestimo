@@ -71,6 +71,9 @@ public class EmprestimoController implements Initializable {
 
 	@FXML
 	private TextField txtAtraso;
+	
+    @FXML
+    private TextField txtIdForm;
 
 	@FXML
 	private TextField pesquisa;
@@ -96,7 +99,9 @@ public class EmprestimoController implements Initializable {
 
 		EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
 		Emprestimo emprestimo = new Emprestimo();
+		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
 
+		
 		emprestimo.setCpf(txtCpf.getText());
 		emprestimo.setNome(txtNome.getText());
 		emprestimo.setEmail(txtEmail.getText());
@@ -106,25 +111,32 @@ public class EmprestimoController implements Initializable {
 		emprestimo.setValor(Float.valueOf(txtValor.getText()));
 		emprestimo.setSexo("M");
 		emprestimo.setDiasAtraso(Integer.valueOf(txtAtraso.getText()));
+		emprestimo.setId(Integer.valueOf(txtIdForm.getText()));
+		
+		arrayList = emprestimoNegocio.buscarClientePorCpf(emprestimo);
 
-		emprestimoNegocio.inserirCliente(emprestimo);
-
+		
+		if(arrayList.isEmpty()) {
+			emprestimoNegocio.inserirCliente(emprestimo);
+		}else {
+			emprestimo.setId(1);
+			emprestimoNegocio.editarCliente(emprestimo);
+		}
+		
 		listarClientes();
-
 	}
 
 	@FXML
 	public void clickItem(MouseEvent event) {
-		System.out.println("evento" + event.getClickCount());
 
 		if (event.getClickCount() == 1) // Checking double click
 		{
 
 			Emprestimo emprestimo = new Emprestimo();
+			emprestimo.setId(tabela.getSelectionModel().getSelectedItem().getId());
 			emprestimo.setCpf(tabela.getSelectionModel().getSelectedItem().getCpf());
 			emprestimo.setNome(tabela.getSelectionModel().getSelectedItem().getNome());
 			emprestimo.setEmail(tabela.getSelectionModel().getSelectedItem().getEmail());
-//			emprestimo.setDataNascimento(tabela.getSelectionModel().getSelectedItem().getDataNascimento());
 			emprestimo.setSalario(tabela.getSelectionModel().getSelectedItem().getSalario());
 			emprestimo.setTelefone(tabela.getSelectionModel().getSelectedItem().getTelefone());
 			emprestimo.setValor(tabela.getSelectionModel().getSelectedItem().getValor());
@@ -168,8 +180,6 @@ public class EmprestimoController implements Initializable {
 		arrayList = emprestimoNegocio.buscarClientes(condicao);
 
 		for (int i = 0; i < arrayList.size(); i++) {
-			System.out.println("Array " + arrayList.get(i).getSexo());
-
 			Emprestimo emprestimo = new Emprestimo();
 			emprestimo.setId(arrayList.get(i).getId());
 			emprestimo.setNome(arrayList.get(i).getNome());
@@ -194,10 +204,7 @@ public class EmprestimoController implements Initializable {
 
 	public void preencherFormulario(Emprestimo emprestimo) {
 
-		System.out.println("emprestimo " + emprestimo.getValor() + "salario " + emprestimo.getSalario() + "sexo "
-				+ emprestimo.getSexo() + "dias " + emprestimo.getDiasAtraso() + "date "
-				+ emprestimo.getDataNascimento());
-
+		txtIdForm.setText(String.valueOf(emprestimo.getId()));
 		txtNome.setText(emprestimo.getNome());
 		txtEmail.setText(emprestimo.getEmail());
 		txtCpf.setText(emprestimo.getCpf());
@@ -220,12 +227,11 @@ public class EmprestimoController implements Initializable {
 		txtTelefone.setText("");
 		txtValor.setText("");
 		txtAtraso.setText("");
+		txtIdForm.setText("");
 
 	}
 
 	public void verificaSexo(String sexo) {
-
-		System.out.println("sexo verificacao" + sexo);
 
 		if (sexo.equals("M")) {
 			isHomem.setSelected(true);

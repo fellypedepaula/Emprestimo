@@ -30,9 +30,7 @@ public class EmprestimoDAO {
 			}
 			try {
 				this.conexao = (Connection) DriverManager.getConnection(url, login, senha);
-				System.out.println("funfou");
 			} catch (SQLException ex) {
-				System.out.println("não funfou " + ex);
 				return null;
 			}
 			return this.conexao;
@@ -61,9 +59,27 @@ public class EmprestimoDAO {
 		}
 	}
 
-	public void atualizaCliente(Emprestimo emprestimo, int id) {
+	public void atualizaCliente(Emprestimo emprestimo) {
+		this.conexao = abreConexaoBD();
+
+		String query, isString = "'";
+		;
+
+		query = "UPDATE EMPRESTIMO SET NOME = " + isString + emprestimo.getNome() + isString + "WHERE ID = "
+				+ emprestimo.getId();
+
+		System.out.println("tentativa de editar" + query);
+
+		try {
+			this.conexao.createStatement().executeUpdate(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		this.conexao = fechaConexaoBD();
+
 	}
-	
 
 	public void inserirCliente(Emprestimo emprestimo) {
 		this.conexao = abreConexaoBD();
@@ -72,7 +88,8 @@ public class EmprestimoDAO {
 				+ isString + emprestimo.getNome() + isString + virgula + isString + emprestimo.getCpf() + isString
 				+ virgula + emprestimo.getSalario() + virgula + isString + emprestimo.getEmail() + isString + virgula
 				+ "'20180212'" + virgula + emprestimo.getValor() + virgula + isString + emprestimo.getTelefone()
-				+ isString + virgula + isString + emprestimo.getSexo() + isString + virgula + emprestimo.getDiasAtraso() +  ");";
+				+ isString + virgula + isString + emprestimo.getSexo() + isString + virgula + emprestimo.getDiasAtraso()
+				+ ");";
 		System.out.println("tentativa de inclusão" + query);
 
 		try {
@@ -81,6 +98,8 @@ public class EmprestimoDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		this.conexao = fechaConexaoBD();
 
 	}
 
@@ -93,13 +112,7 @@ public class EmprestimoDAO {
 		System.out.println("tentando executar" + query);
 
 		ResultSet rs = this.conexao.createStatement().executeQuery(query);
-		
-
-		
-
 		while (rs.next()) {
-			System.out.println("data nascimento" + rs.getDate("DT_NASCIMENTO").toString());
-			
 			Emprestimo emprestimo = new Emprestimo();
 			emprestimo.setId(rs.getInt("ID"));
 			emprestimo.setNome(rs.getString("NOME"));
@@ -111,7 +124,7 @@ public class EmprestimoDAO {
 			emprestimo.setTelefone(rs.getString("TELEFONE"));
 			emprestimo.setSexo(rs.getString("SEXO"));
 			emprestimo.setDiasAtraso(rs.getInt("ATRASO"));
-			
+
 			arrayList.add(emprestimo);
 		}
 		this.conexao = fechaConexaoBD();
@@ -119,29 +132,34 @@ public class EmprestimoDAO {
 
 	}
 
-	public ArrayList<Emprestimo> buscaClientePorId(int id) throws SQLException {
+	public ArrayList<Emprestimo> buscaClientePorCpf(Emprestimo emprestimoN) throws SQLException {
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
 		this.conexao = abreConexaoBD();
 
-		String query;
-		query = "SELECT * FROM EMPRESTIMO WHERE ID =" + id + ";";
+		String query, isString = "'";
+
+		query = "SELECT * FROM EMPRESTIMO WHERE  CPF = " + isString + emprestimoN.getCpf() + isString + " AND ID = "
+				+ emprestimoN.getId() + ";";
 		System.out.println("tentando executar" + query);
 
 		ResultSet rs = this.conexao.createStatement().executeQuery(query);
-
 		while (rs.next()) {
 			Emprestimo emprestimo = new Emprestimo();
 			emprestimo.setId(rs.getInt("ID"));
 			emprestimo.setNome(rs.getString("NOME"));
 			emprestimo.setCpf(rs.getString("CPF"));
-//			emprestimo.setValor(rs.getString("SALARIO"));
-//			emprestimo.setDataNascimento(rs.getString("DT_NASCIMENTO"));
+			emprestimo.setValor(rs.getFloat("VALOR"));
+			emprestimo.setSalario(rs.getFloat("SALARIO"));
+			emprestimo.setDataNascimento(rs.getDate("DT_NASCIMENTO").toString());
 			emprestimo.setEmail(rs.getString("EMAIL"));
 			emprestimo.setTelefone(rs.getString("TELEFONE"));
+			emprestimo.setSexo(rs.getString("SEXO"));
+			emprestimo.setDiasAtraso(rs.getInt("ATRASO"));
 			arrayList.add(emprestimo);
 		}
 		this.conexao = fechaConexaoBD();
 		return arrayList;
+
 	}
 
 }
