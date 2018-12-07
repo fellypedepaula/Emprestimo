@@ -2,6 +2,8 @@ package controller;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -95,17 +97,22 @@ public class EmprestimoController implements Initializable {
 	}
 
 	@FXML
-	void onSalvar(ActionEvent event) throws SQLException {
+	void onSalvar(ActionEvent event) throws SQLException, ParseException {
 
 		EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
 		Emprestimo emprestimo = new Emprestimo();
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		java.sql.Date data = new java.sql.Date(format.parse(txtDate.getPromptText()).getTime());
+		
+		System.out.println("Conversão da data" + data);
 
 		
 		emprestimo.setCpf(txtCpf.getText());
 		emprestimo.setNome(txtNome.getText());
 		emprestimo.setEmail(txtEmail.getText());
-		emprestimo.setDataNascimento(txtDate.getPromptText());
+		emprestimo.setDataNascimento(data);
 		emprestimo.setSalario(Float.valueOf(txtSalario.getText()));
 		emprestimo.setTelefone(txtTelefone.getText());
 		emprestimo.setValor(Float.valueOf(txtValor.getText()));
@@ -208,7 +215,7 @@ public class EmprestimoController implements Initializable {
 		txtNome.setText(emprestimo.getNome());
 		txtEmail.setText(emprestimo.getEmail());
 		txtCpf.setText(emprestimo.getCpf());
-		txtDate.setPromptText(emprestimo.getDataNascimento());
+		txtDate.setPromptText(String.valueOf(emprestimo.getDataNascimento()));
 		txtSalario.setText(String.valueOf(emprestimo.getSalario()));
 		txtTelefone.setText(emprestimo.getTelefone());
 		txtValor.setText(String.valueOf(emprestimo.getValor()));

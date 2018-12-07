@@ -1,13 +1,16 @@
 package model;
 
+import java.util.Date;
 
 public class Emprestimo {
 
-	String nome, email, dataNascimento, cpf, telefone, sexo, selected;
+	String nome, email, cpf, telefone, sexo, selected;
 
 	int id, idade, diasAtraso;
 	float salario, valor;
-
+	Date dataNascimento;
+	
+	
 	public String getNome() {
 		return nome;
 	}
@@ -24,11 +27,11 @@ public class Emprestimo {
 		this.email = email;
 	}
 
-	public String getDataNascimento() {
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(String dataNascimento) {
+	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 

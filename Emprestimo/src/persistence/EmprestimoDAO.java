@@ -48,8 +48,8 @@ public class EmprestimoDAO {
 	public void deletaCliente(int id) {
 		this.conexao = abreConexaoBD();
 		String query;
-		query = "DELETE FROM EMPRESTIMO WHERE ID =" + id + ";";
-		System.out.println("tentando executar" + query);
+		query = "DELETE FROM EMPRESTIMO WHERE ID = " + id + ";";
+		System.out.println("tentando deletar " + query);
 
 		try {
 			this.conexao.createStatement().executeUpdate(query);
@@ -87,7 +87,7 @@ public class EmprestimoDAO {
 		query = "INSERT INTO EMPRESTIMO (NOME, CPF, SALARIO, EMAIL, DT_NASCIMENTO, VALOR, TELEFONE, SEXO, ATRASO) VALUES("
 				+ isString + emprestimo.getNome() + isString + virgula + isString + emprestimo.getCpf() + isString
 				+ virgula + emprestimo.getSalario() + virgula + isString + emprestimo.getEmail() + isString + virgula
-				+ "'20180212'" + virgula + emprestimo.getValor() + virgula + isString + emprestimo.getTelefone()
+				+ isString + emprestimo.getDataNascimento() + isString + virgula + emprestimo.getValor() + virgula + isString + emprestimo.getTelefone()
 				+ isString + virgula + isString + emprestimo.getSexo() + isString + virgula + emprestimo.getDiasAtraso()
 				+ ");";
 		System.out.println("tentativa de inclusão" + query);
@@ -108,7 +108,7 @@ public class EmprestimoDAO {
 		this.conexao = abreConexaoBD();
 
 		String query;
-		query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' OR CPF LIKE '%" + condicao + "%')";
+		query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' OR CPF LIKE '%" + condicao + "%') ORDER BY NOME";
 		System.out.println("tentando executar" + query);
 
 		ResultSet rs = this.conexao.createStatement().executeQuery(query);
@@ -119,7 +119,7 @@ public class EmprestimoDAO {
 			emprestimo.setCpf(rs.getString("CPF"));
 			emprestimo.setValor(rs.getFloat("VALOR"));
 			emprestimo.setSalario(rs.getFloat("SALARIO"));
-			emprestimo.setDataNascimento(rs.getDate("DT_NASCIMENTO").toString());
+			emprestimo.setDataNascimento(rs.getDate("DT_NASCIMENTO"));
 			emprestimo.setEmail(rs.getString("EMAIL"));
 			emprestimo.setTelefone(rs.getString("TELEFONE"));
 			emprestimo.setSexo(rs.getString("SEXO"));
@@ -150,7 +150,7 @@ public class EmprestimoDAO {
 			emprestimo.setCpf(rs.getString("CPF"));
 			emprestimo.setValor(rs.getFloat("VALOR"));
 			emprestimo.setSalario(rs.getFloat("SALARIO"));
-			emprestimo.setDataNascimento(rs.getDate("DT_NASCIMENTO").toString());
+			emprestimo.setDataNascimento(rs.getDate("DT_NASCIMENTO"));
 			emprestimo.setEmail(rs.getString("EMAIL"));
 			emprestimo.setTelefone(rs.getString("TELEFONE"));
 			emprestimo.setSexo(rs.getString("SEXO"));
