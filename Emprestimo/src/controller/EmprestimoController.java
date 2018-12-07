@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import com.mysql.cj.util.Util;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import model.Emprestimo;
 import model.EmprestimoNegocio;
 import persistence.EmprestimoDAO;
+import util.TextFieldFormatter;
 
 public class EmprestimoController implements Initializable {
 
@@ -222,6 +225,12 @@ public class EmprestimoController implements Initializable {
 		txtAtraso.setText(String.valueOf(emprestimo.getDiasAtraso()));
 		verificaSexo(emprestimo.getSexo().toString());
 		
+		
+		utilitarios.Util tff = new utilitarios.Util();
+    	tff.setMask("(##)#####-####");
+    	tff.setCaracteresValidos("0123456789");
+    	tff.setTf(txtTelefone);
+    	tff.formatter();
 		
 	}
 
