@@ -95,7 +95,7 @@ public class EmprestimoDAO {
 				+ isString + emprestimo.getDataNascimento() + isString + virgula + emprestimo.getValor() + virgula
 				+ isString + emprestimo.getTelefone() + isString + virgula + isString + emprestimo.getSexo() + isString
 				+ virgula + emprestimo.getDiasAtraso() + ");";
-		System.out.println("tentativa de inclusão" + query);
+		System.out.println("tentativa de inclusão " + query);
 
 		try {
 			this.conexao.createStatement().executeUpdate(query);
@@ -144,8 +144,7 @@ public class EmprestimoDAO {
 
 		String query, isString = "'";
 
-		query = "SELECT * FROM EMPRESTIMO WHERE  CPF = " + isString + emprestimoN.getCpf() + isString + " AND ID = "
-				+ emprestimoN.getId() + ";";
+		query = "SELECT * FROM EMPRESTIMO WHERE  CPF = " + isString + emprestimoN.getCpf() + isString + ";";
 		System.out.println("tentando executar" + query);
 
 		ResultSet rs = this.conexao.createStatement().executeQuery(query);
