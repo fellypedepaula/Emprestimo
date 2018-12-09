@@ -5,20 +5,21 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
-
-import com.mysql.cj.util.Util;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
@@ -26,7 +27,6 @@ import javafx.scene.input.MouseEvent;
 import model.Emprestimo;
 import model.EmprestimoNegocio;
 import persistence.EmprestimoDAO;
-import util.TextFieldFormatter;
 
 public class EmprestimoController implements Initializable {
 
@@ -76,19 +76,32 @@ public class EmprestimoController implements Initializable {
 
 	@FXML
 	private TextField txtAtraso;
-	
-    @FXML
-    private TextField txtIdForm;
+
+	@FXML
+	private TextField txtIdForm;
 
 	@FXML
 	private TextField pesquisa;
 
 	@FXML
 	void onExcluir(ActionEvent event) throws SQLException {
-		EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
-		emprestimoNegocio.deletaCliente(tabela.getSelectionModel().getSelectedItem().getId());
-		limparFormulario();
-		listarClientes();
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Ciência de operação");
+		alert.setContentText(
+				"Deseja realmente excluir a dívida do(a) " + tabela.getSelectionModel().getSelectedItem().getNome()
+						+ " portador do CPF " + tabela.getSelectionModel().getSelectedItem().getCpf() + " ?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
+			emprestimoNegocio.deletaCliente(tabela.getSelectionModel().getSelectedItem().getId());
+			limparFormulario();
+			listarClientes();
+		} else {
+			alert = new Alert(AlertType.INFORMATION);
+			alert.setContentText("Operação cancelada com sucesso!");
+			alert.showAndWait();
+		}
 
 	}
 
@@ -96,6 +109,38 @@ public class EmprestimoController implements Initializable {
 	void onInserirNovo(ActionEvent event) {
 		limparFormulario();
 		txtNome.requestFocus();
+	}
+
+	@FXML
+	void onReleasedCpf(KeyEvent event) {
+		utilitarios.Util tff = new utilitarios.Util();
+		tff.setMask("###-###-###.##");
+		tff.setCaracteresValidos("0123456789");
+		tff.setTf(txtCpf);
+		tff.formatter();
+	}
+
+	@FXML
+	void onReleasedData(KeyEvent event) {
+	}
+
+	@FXML
+	void onReleasedSalario(KeyEvent event) {
+
+	}
+
+	@FXML
+	void onReleasedValor(KeyEvent event) {
+
+	}
+
+	@FXML
+	void onReleasedTelefone(KeyEvent event) {
+		utilitarios.Util tff = new utilitarios.Util();
+		tff.setMask("(##)#####-####");
+		tff.setCaracteresValidos("0123456789");
+		tff.setTf(txtTelefone);
+		tff.formatter();
 
 	}
 
@@ -105,13 +150,10 @@ public class EmprestimoController implements Initializable {
 		EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
 		Emprestimo emprestimo = new Emprestimo();
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
-		
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		java.sql.Date data = new java.sql.Date(format.parse(txtDate.getPromptText()).getTime());
-		
-		System.out.println("Conversão da data" + data);
-
-		
 		emprestimo.setCpf(txtCpf.getText());
 		emprestimo.setNome(txtNome.getText());
 		emprestimo.setEmail(txtEmail.getText());
@@ -122,17 +164,33 @@ public class EmprestimoController implements Initializable {
 		emprestimo.setSexo("M");
 		emprestimo.setDiasAtraso(Integer.valueOf(txtAtraso.getText()));
 		emprestimo.setId(Integer.valueOf(txtIdForm.getText()));
-		
+
 		arrayList = emprestimoNegocio.buscarClientePorCpf(emprestimo);
 
-		
-		if(arrayList.isEmpty()) {
+		if (arrayList.isEmpty()) {
 			emprestimoNegocio.inserirCliente(emprestimo);
-		}else {
-			emprestimo.setId(1);
-			emprestimoNegocio.editarCliente(emprestimo);
+			alert = new Alert(AlertType.INFORMATION);
+			alert.setContentText("Cadastro realizado com sucesso!");
+			alert.showAndWait();
+		} else {
+			emprestimo.setId(Integer.parseInt(txtIdForm.getText()));
+
+			alert.setTitle("Ciência de operação");
+			alert.setContentText("O CPF informado já existe em nossa base de dados, deseja atualizar o cadastro?");
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) {
+				emprestimoNegocio.editarCliente(emprestimo);
+				alert = new Alert(AlertType.INFORMATION);
+				alert.setContentText("Cadastro atualizado com sucesso!");
+				alert.showAndWait();
+			} else {
+				alert = new Alert(AlertType.INFORMATION);
+				alert.setContentText("Operação cancelada com sucesso!");
+				alert.showAndWait();
+			}
 		}
-		
+
 		listarClientes();
 	}
 
@@ -224,14 +282,6 @@ public class EmprestimoController implements Initializable {
 		txtValor.setText(String.valueOf(emprestimo.getValor()));
 		txtAtraso.setText(String.valueOf(emprestimo.getDiasAtraso()));
 		verificaSexo(emprestimo.getSexo().toString());
-		
-		
-		utilitarios.Util tff = new utilitarios.Util();
-    	tff.setMask("(##)#####-####");
-    	tff.setCaracteresValidos("0123456789");
-    	tff.setTf(txtTelefone);
-    	tff.formatter();
-		
 	}
 
 	public void limparFormulario() {
