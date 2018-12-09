@@ -62,11 +62,16 @@ public class EmprestimoDAO {
 	public void atualizaCliente(Emprestimo emprestimo) {
 		this.conexao = abreConexaoBD();
 
-		String query, isString = "'";
+		String query, isString = "'", virgula = ",";
 		;
 
-		query = "UPDATE EMPRESTIMO SET NOME = " + isString + emprestimo.getNome() + isString + "WHERE ID = "
-				+ emprestimo.getId();
+		query = "UPDATE EMPRESTIMO SET NOME = " + isString + emprestimo.getNome() + isString + virgula + "EMAIL = "
+				+ isString + emprestimo.getEmail() + isString + virgula + "CPF = " + isString + emprestimo.getCpf()
+				+ isString + virgula + "DT_NASCIMENTO = " + isString + emprestimo.getDataNascimento() + isString
+				+ virgula + "TELEFONE = " + isString + emprestimo.getTelefone() + isString + virgula + "SEXO = "
+				+ isString + emprestimo.getSexo() + isString + virgula + "SALARIO = " + emprestimo.getSalario()
+				+ virgula + "VALOR = " + emprestimo.getValor() + virgula + "ATRASO = " + emprestimo.getDiasAtraso()
+				+  " WHERE ID = " + emprestimo.getId();
 
 		System.out.println("tentativa de editar" + query);
 
@@ -87,9 +92,9 @@ public class EmprestimoDAO {
 		query = "INSERT INTO EMPRESTIMO (NOME, CPF, SALARIO, EMAIL, DT_NASCIMENTO, VALOR, TELEFONE, SEXO, ATRASO) VALUES("
 				+ isString + emprestimo.getNome() + isString + virgula + isString + emprestimo.getCpf() + isString
 				+ virgula + emprestimo.getSalario() + virgula + isString + emprestimo.getEmail() + isString + virgula
-				+ isString + emprestimo.getDataNascimento() + isString + virgula + emprestimo.getValor() + virgula + isString + emprestimo.getTelefone()
-				+ isString + virgula + isString + emprestimo.getSexo() + isString + virgula + emprestimo.getDiasAtraso()
-				+ ");";
+				+ isString + emprestimo.getDataNascimento() + isString + virgula + emprestimo.getValor() + virgula
+				+ isString + emprestimo.getTelefone() + isString + virgula + isString + emprestimo.getSexo() + isString
+				+ virgula + emprestimo.getDiasAtraso() + ");";
 		System.out.println("tentativa de inclusão" + query);
 
 		try {
@@ -108,7 +113,8 @@ public class EmprestimoDAO {
 		this.conexao = abreConexaoBD();
 
 		String query;
-		query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' OR CPF LIKE '%" + condicao + "%') ORDER BY NOME";
+		query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' OR CPF LIKE '%" + condicao
+				+ "%') ORDER BY NOME";
 		System.out.println("tentando executar" + query);
 
 		ResultSet rs = this.conexao.createStatement().executeQuery(query);

@@ -11,6 +11,7 @@ public class Util {
 	private TextField tf;
 	private String CaracteresValidos;
 	private String mask;
+	
 
 	public Util() {
 	        mf = new MaskFormatter();

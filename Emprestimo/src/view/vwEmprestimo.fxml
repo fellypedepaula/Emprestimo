@@ -27,8 +27,8 @@
             <TextField fx:id="txtTelefone" layoutX="503.0" layoutY="141.0" onKeyReleased="#onReleasedTelefone" prefHeight="25.0" prefWidth="106.0" />
             <DatePicker fx:id="txtDate" layoutX="134.0" layoutY="177.0" onKeyReleased="#onReleasedData" prefHeight="25.0" prefWidth="133.0" />
             <Label layoutX="414.0" layoutY="230.0" text="Sexo" />
-            <CheckBox fx:id="isHomem" layoutX="506.0" layoutY="230.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="51.0" text="M" />
-            <CheckBox fx:id="isMulher" layoutX="542.0" layoutY="230.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="51.0" text="F" />
+            <CheckBox fx:id="isHomem" layoutX="506.0" layoutY="230.0" mnemonicParsing="false" onMouseClicked="#onCliqueM" prefHeight="17.0" prefWidth="51.0" text="M" />
+            <CheckBox fx:id="isMulher" layoutX="542.0" layoutY="230.0" mnemonicParsing="false" onMouseClicked="#onCliqueF" prefHeight="17.0" prefWidth="51.0" text="F" />
             <Label layoutX="416.0" layoutY="174.0" text="Valor" />
             <TextField fx:id="txtValor" layoutX="502.0" layoutY="170.0" onKeyReleased="#onReleasedValor" prefHeight="25.0" prefWidth="106.0" />
             <TableView fx:id="tabela" editable="true" layoutX="14.0" layoutY="272.0" onMouseClicked="#clickItem" prefHeight="251.0" prefWidth="702.0">
@@ -47,6 +47,7 @@
             <Button layoutX="625.0" layoutY="213.0" mnemonicParsing="false" onAction="#onSalvar" prefHeight="25.0" prefWidth="91.0" text="Salvar" />
             <Button layoutX="625.0" layoutY="111.0" mnemonicParsing="false" onAction="#onInserirNovo" prefHeight="25.0" prefWidth="91.0" text="Inserir Novo" />
             <TextField fx:id="txtIdForm" layoutX="281.0" layoutY="183.0" prefHeight="25.0" prefWidth="91.0" visible="false" />
+            <TextField fx:id="txtSexo" layoutX="291.0" layoutY="193.0" prefHeight="25.0" prefWidth="91.0" visible="false" />
          </children>
       </Pane>
    </children>

@@ -82,6 +82,24 @@ public class EmprestimoController implements Initializable {
 
 	@FXML
 	private TextField pesquisa;
+	
+    @FXML
+    private TextField txtSexo;
+
+	@FXML
+	void onCliqueF(MouseEvent event) {
+		isHomem.setSelected(false);
+		isMulher.setSelected(true);
+		txtSexo.setText("F");
+	}
+
+	@FXML
+	void onCliqueM(MouseEvent event) {
+		isHomem.setSelected(true);
+		isMulher.setSelected(false);
+		txtSexo.setText("M");
+
+	}
 
 	@FXML
 	void onExcluir(ActionEvent event) throws SQLException {
@@ -161,7 +179,7 @@ public class EmprestimoController implements Initializable {
 		emprestimo.setSalario(Float.valueOf(txtSalario.getText()));
 		emprestimo.setTelefone(txtTelefone.getText());
 		emprestimo.setValor(Float.valueOf(txtValor.getText()));
-		emprestimo.setSexo("M");
+		emprestimo.setSexo(txtSexo.getText());
 		emprestimo.setDiasAtraso(Integer.valueOf(txtAtraso.getText()));
 		emprestimo.setId(Integer.valueOf(txtIdForm.getText()));
 
@@ -281,6 +299,7 @@ public class EmprestimoController implements Initializable {
 		txtTelefone.setText(emprestimo.getTelefone());
 		txtValor.setText(String.valueOf(emprestimo.getValor()));
 		txtAtraso.setText(String.valueOf(emprestimo.getDiasAtraso()));
+//		txtSexo.setText(emprestimo.getSexo());
 		verificaSexo(emprestimo.getSexo().toString());
 	}
 
@@ -294,6 +313,7 @@ public class EmprestimoController implements Initializable {
 		txtValor.setText("");
 		txtAtraso.setText("");
 		txtIdForm.setText("");
+		txtSexo.setText("");
 
 	}
 
@@ -302,10 +322,12 @@ public class EmprestimoController implements Initializable {
 		if (sexo.equals("M")) {
 			isHomem.setSelected(true);
 			isMulher.setSelected(false);
+			txtSexo.setText("M");
 
 		} else {
 			isMulher.setSelected(true);
 			isHomem.setSelected(false);
+			txtSexo.setText("F");
 		}
 	}
 
