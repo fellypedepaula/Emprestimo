@@ -4,7 +4,10 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -179,12 +182,17 @@ public class EmprestimoController implements Initializable {
 			ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
 			alert = new Alert(AlertType.CONFIRMATION);
 
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			java.sql.Date data = new java.sql.Date(format.parse(txtDate.getPromptText()).getTime());
+//			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//			java.sql.Date data = new java.sql.Date(format.parse(txtDate.getPromptText()).getTime());
+			
+			java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(txtDate.getValue());
+
+			
+			
 			emprestimo.setCpf(txtCpf.getText());
 			emprestimo.setNome(txtNome.getText());
 			emprestimo.setEmail(txtEmail.getText());
-			emprestimo.setDataNascimento(data);
+			emprestimo.setDataNascimento(gettedDatePickerDate);
 			emprestimo.setSalario(Float.valueOf(txtSalario.getText()));
 			emprestimo.setTelefone(txtTelefone.getText());
 			emprestimo.setValor(Float.valueOf(txtValor.getText()));
@@ -283,12 +291,14 @@ public class EmprestimoController implements Initializable {
 			emprestimo.setSexo(arrayList.get(i).getSexo());
 			emprestimo.setDiasAtraso(arrayList.get(i).getDiasAtraso());
 			emprestimo.setDataNascimento(arrayList.get(i).getDataNascimento());
-//			preencherFormulario(arrayList.get(0));
+			System.out.println("data" + arrayList.get(i).getDataNascimento());
+
 			oblist.add(emprestimo);
 			tabela.setItems(oblist);
 		}
 
-//		tabela.getSelectionModel().selectFirst();
+
+		tabela.getSelectionModel().selectFirst();
 		selectCol.setCellValueFactory(new PropertyValueFactory<>("id"));
 		nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
 		colunaCpf.setCellValueFactory(new PropertyValueFactory<>("cpf"));
@@ -298,24 +308,16 @@ public class EmprestimoController implements Initializable {
 	}
 
 	public boolean validaFormulario() {
-		
-		System.out.println(
-				"nome " + txtNome.getText() + 
-				"email " + txtEmail.getText() + 
-				"cpf  " + txtCpf.getText() + 
-				"salario  " + txtSalario.getText() + 
-				"telefone  " + txtTelefone.getText() + 
-				"valor  " + txtValor.getText() + 
-				"atraso  " + txtAtraso.getText() + 
-				"data  " + txtDate.getPromptText() + 
-				"ishomem  " + !isHomem.isSelected() + 
-				"isMulher  " + !isMulher.isSelected() 
-				);
+
+		System.out.println("nome " + txtNome.getText() + "email " + txtEmail.getText() + "cpf  " + txtCpf.getText()
+				+ "salario  " + txtSalario.getText() + "telefone  " + txtTelefone.getText() + "valor  "
+				+ txtValor.getText() + "atraso  " + txtAtraso.getText() + "data  " + txtDate.getPromptText()
+				+ "ishomem  " + !isHomem.isSelected() + "isMulher  " + !isMulher.isSelected());
 
 		if ((txtNome.getText().isEmpty()) || (txtEmail.getText().isEmpty()) || (txtCpf.getText().isEmpty())
 				|| (txtSalario.getText().isEmpty()) || (txtSalario.getText().isEmpty())
 				|| (txtTelefone.getText().isEmpty()) || (txtValor.getText().isEmpty())
-				|| (txtAtraso.getText().isEmpty()) //|| (txtDate.getPromptText().isEmpty())
+				|| (txtAtraso.getText().isEmpty()) // || (txtDate.getPromptText().isEmpty())
 				|| (!isHomem.isSelected() && (!isMulher.isSelected()))) {
 
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -331,11 +333,22 @@ public class EmprestimoController implements Initializable {
 
 	public void preencherFormulario(Emprestimo emprestimo) {
 
+		String data = emprestimo.getDataNascimento().toString();
+
+		System.out.println("data" + data);
+
+		int ano, mes, dia;
+		// 1996-02-08
+
+		ano = Integer.parseInt(data.substring(0, 4));
+		mes = Integer.parseInt(data.substring(5, 7));
+		dia = Integer.parseInt(data.substring(8, 10));
+
 		txtIdForm.setText(String.valueOf(emprestimo.getId()));
 		txtNome.setText(emprestimo.getNome());
 		txtEmail.setText(emprestimo.getEmail());
 		txtCpf.setText(emprestimo.getCpf());
-		txtDate.setPromptText(String.valueOf(emprestimo.getDataNascimento()));
+		txtDate.setValue(LocalDate.of(ano, mes, dia));
 		txtSalario.setText(String.valueOf(emprestimo.getSalario()));
 		txtTelefone.setText(emprestimo.getTelefone());
 		txtValor.setText(String.valueOf(emprestimo.getValor()));

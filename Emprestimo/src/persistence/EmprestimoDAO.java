@@ -14,7 +14,9 @@ public class EmprestimoDAO {
 	private String senha = "fellype";
 	private String host = "localhost:3306";
 	private String dbName = "emprestimo";
-	private String url = "jdbc:mysql://" + host + "/" + dbName + "?useTimezone=true&serverTimezone=UTC";
+	private String timeZone = "America/Sao_Paulo";
+//	private String url = "jdbc:mysql://" + host + "/" + dbName + "?useTimezone=true&serverTimezone=UTC";
+	private String url = "jdbc:mysql://" + host + "/" + dbName + "?useTimezone=true&serverTimezone=" + timeZone;
 
 	public Connection conexao = null;
 
@@ -109,6 +111,7 @@ public class EmprestimoDAO {
 	}
 
 	public ArrayList<Emprestimo> buscaClientes(String condicao) throws SQLException {
+		
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
 		this.conexao = abreConexaoBD();
 
