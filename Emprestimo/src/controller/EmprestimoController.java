@@ -171,7 +171,7 @@ public class EmprestimoController implements Initializable {
 		}
 	}
 
-	@FXML //
+	@FXML // setando mascara do cpf no momento em que o usuário está digitando
 	void onReleasedCpf(KeyEvent event) {
 		if (txtCpf.getText() != null && "".equals(txtCpf.getText())) {
 			utilitarios.Util tff = new utilitarios.Util();
@@ -192,7 +192,7 @@ public class EmprestimoController implements Initializable {
 
 	}
 
-	@FXML
+	@FXML // setando mascara do telefone no momento em que o usuário está digitando
 	void onReleasedTelefone(KeyEvent event) {
 		if (txtTelefone.getText() != null && "".equals(txtTelefone.getText())) {
 			utilitarios.Util tff = new utilitarios.Util();
@@ -212,7 +212,11 @@ public class EmprestimoController implements Initializable {
 //		tff.formatter();
 	}
 
-	@FXML
+	@FXML // acionado através do botão salvar na tela, ao clicar faz as devidas validações
+			// para verificar se e pertinente inserir as informações, na sequência valida se
+			// o cpf já existe
+	// caso sim apenas realiza alteração no registro, caso não insere o novo
+	// registro
 	void onSalvar(ActionEvent event) throws SQLException {
 		if (validaFormulario()) {
 			if (isNomeValido()) {
@@ -237,10 +241,13 @@ public class EmprestimoController implements Initializable {
 									emprestimo.setSexo(txtSexo.getText());
 									emprestimo.setDiasAtraso(Integer.valueOf(txtAtraso.getText()));
 
-									arrayList = emprestimoNegocio.buscarClientePorCpf(emprestimo);
+									arrayList = emprestimoNegocio.buscarClientePorCpf(emprestimo); // realizando
+																									// consulta do cpf
+																									// informado
 
 									if (arrayList.isEmpty()) {
-										emprestimoNegocio.inserirCliente(emprestimo);
+										emprestimoNegocio.inserirCliente(emprestimo); // registro novo, realizando
+																						// inserção
 
 									} else {
 										emprestimo.setId(Integer.parseInt(txtIdForm.getText()));
@@ -251,7 +258,10 @@ public class EmprestimoController implements Initializable {
 
 										Optional<ButtonType> result = alert.showAndWait();
 										if (result.get() == ButtonType.OK) {
-											emprestimoNegocio.editarCliente(emprestimo);
+											emprestimoNegocio.editarCliente(emprestimo); // registro já existente,
+																							// atualizando os dados
+																							// através das novas
+																							// informações
 											alert = new Alert(AlertType.INFORMATION);
 											alert.setContentText("Cadastro atualizado com sucesso!");
 											alert.showAndWait();
@@ -273,8 +283,10 @@ public class EmprestimoController implements Initializable {
 	}
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		txtDate.setEditable(false);
+	public void initialize(URL location, ResourceBundle resources) { // metodo necessário para que seja possível iniciar
+																		// a aplicação com a tableview já carregada
+		txtDate.setEditable(false); // desabilitado para forçar o usuário a utilizar o calendário, que por sua vez
+									// valida a data
 
 		try {
 			listarClientes();
@@ -284,6 +296,7 @@ public class EmprestimoController implements Initializable {
 
 	}
 
+	// responsável por listar as informações do banco de dados
 	public void listarClientes() throws SQLException {
 		tabela.getItems().clear();
 		limparFormulario();
@@ -320,15 +333,8 @@ public class EmprestimoController implements Initializable {
 
 	}
 
+	// validação se todos os campos do formulário estão preenchidos
 	public boolean validaFormulario() {
-
-		System.out.println("nome " + txtNome.getText() + "email " + txtEmail.getText() + "cpf  " + txtCpf.getText()
-				+ "salario  " + txtSalario.getText() + "telefone  " + txtTelefone.getText() + "valor  "
-				+ txtValor.getText() + "atraso  " + txtAtraso.getText() + "data  " + txtDate.getPromptText()
-				+ "ishomem  " + !isHomem.isSelected() + "isMulher  " + !isMulher.isSelected());
-
-//!"".equals(txtIdForm.getText()
-
 		if (
 
 		(txtNome.getText() == null && "".equals(txtNome.getText()))
@@ -354,6 +360,7 @@ public class EmprestimoController implements Initializable {
 
 	}
 
+	// método de iinserir dados no formulario
 	public void preencherFormulario(Emprestimo emprestimo) {
 		utilitarios.Util tff = new utilitarios.Util();
 		tff.setCaracteresValidos("0123456789");
@@ -384,6 +391,7 @@ public class EmprestimoController implements Initializable {
 		tff.formatter();
 	}
 
+	// limpando o formulario
 	public void limparFormulario() {
 		txtNome.setText(null);
 		txtEmail.setText(null);
@@ -399,6 +407,7 @@ public class EmprestimoController implements Initializable {
 		isMulher.setSelected(false);
 	}
 
+	// verificação e preenchimento do checkbox adequado
 	public void verificaSexo(String sexo) {
 
 		if (sexo.equals("M")) {
@@ -413,12 +422,14 @@ public class EmprestimoController implements Initializable {
 		}
 	}
 
+	// remover caracteres especiais
 	public String retiraCaracteresEspeciais(String text) {
 		text = text.replaceAll("([^a-zZ-Z0-9 ])", "");
 		text = text.replaceAll(" ", "");
 		return text;
 	}
 
+	// validando cpf
 	public boolean validaCPF() {
 		if (ValidaCPF.isCPF(retiraCaracteresEspeciais(txtCpf.getText()))) {
 			return true;
@@ -430,6 +441,7 @@ public class EmprestimoController implements Initializable {
 		}
 	}
 
+	// validando telefone
 	public boolean isTelefone() {
 		String numeroTelefone = txtTelefone.getText().toString();
 		numeroTelefone = numeroTelefone.replaceAll(" ", "");
@@ -458,6 +470,7 @@ public class EmprestimoController implements Initializable {
 //		}
 //	}
 
+	// verificando se só existem letras e espaços no campo nome do formulário
 	boolean isNomeValido() {
 		if (txtNome.getText().matches("[a-zA-Z\\s]+")) {
 			return true;
@@ -469,6 +482,8 @@ public class EmprestimoController implements Initializable {
 		}
 	}
 
+	// validando se o campo atraso do formuário foi informado corretamente como
+	// inteiro
 	boolean isDiasAtrasoValido() {
 		try {
 			Integer.parseInt((txtAtraso.getText()));
@@ -481,6 +496,7 @@ public class EmprestimoController implements Initializable {
 		}
 	}
 
+	// verificando se um dos checkbox - homem / mulher estão selecionados
 	boolean isSexoValido() {
 		if (!isHomem.isSelected() && (!isMulher.isSelected())) {
 			Alert alert = new Alert(AlertType.ERROR);

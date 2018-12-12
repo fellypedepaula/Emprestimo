@@ -17,6 +17,7 @@ public class Util {
 	        mf = new MaskFormatter();
 	    }
 
+	//texField selecionado, caracteres validos definidos na camada de controle, mascara escolhida
 	public void formatter(TextField tf, String CaracteresValidos, String mask) {
 		try {
 			mf.setMask(mask);
@@ -62,30 +63,18 @@ public class Util {
 		formatter(this.tf, this.CaracteresValidos, this.mask);
 	}
 
-	/**
-	 * @return the tf
-	 */
 	public TextField getTf() {
 		return tf;
 	}
 
-	/**
-	 * @param tf the tf to set
-	 */
 	public void setTf(TextField tf) {
 		this.tf = tf;
 	}
 
-	/**
-	 * @return the CaracteresValidos
-	 */
 	public String getCaracteresValidos() {
 		return CaracteresValidos;
 	}
 
-	/**
-	 * @param CaracteresValidos the CaracteresValidos to set
-	 */
 	public void setCaracteresValidos(String CaracteresValidos) {
 		this.CaracteresValidos = CaracteresValidos;
 	}
@@ -94,9 +83,6 @@ public class Util {
 		return mask;
 	}
 
-	/**
-	 * @param mask the mask to set
-	 */
 	public void setMask(String mask) {
 		this.mask = mask;
 	}

@@ -15,8 +15,19 @@ public class EmprestimoDAO {
 	private String host = "localhost:3306";
 	private String dbName = "emprestimo";
 	private String timeZone = "America/Sao_Paulo";
-	private String url = "jdbc:mysql://" + host + "/" + dbName + "?useTimezone=true&serverTimezone=" + timeZone; //para retornar mesma data e hora no padrão da versão do mysql instalado
-
+	private String url = "jdbc:mysql://" + host + "/" + dbName + "?useTimezone=true&serverTimezone=" + timeZone; // para
+																													// retornar
+																													// mesma
+																													// data
+																													// e
+																													// hora
+																													// no
+																													// padrão
+																													// da
+																													// versão
+																													// do
+																													// mysql
+																													// instalado
 
 	public Connection conexao = null;
 
@@ -47,13 +58,11 @@ public class EmprestimoDAO {
 
 	}
 
-	//delete um cliente da base de dados
+	// delete um cliente da base de dados
 	public void deletaCliente(int id) {
 		this.conexao = abreConexaoBD();
 		String query;
 		query = "DELETE FROM EMPRESTIMO WHERE ID = " + id + ";";
-		System.out.println("tentando deletar " + query);
-
 		try {
 			this.conexao.createStatement().executeUpdate(query);
 		} catch (SQLException e) {
@@ -62,7 +71,7 @@ public class EmprestimoDAO {
 		}
 	}
 
-	//atualiza o cadastro de um cliente
+	// atualiza o cadastro de um cliente
 	public void atualizaCliente(Emprestimo emprestimo) {
 		this.conexao = abreConexaoBD();
 
@@ -75,9 +84,7 @@ public class EmprestimoDAO {
 				+ virgula + "TELEFONE = " + isString + emprestimo.getTelefone() + isString + virgula + "SEXO = "
 				+ isString + emprestimo.getSexo() + isString + virgula + "SALARIO = " + emprestimo.getSalario()
 				+ virgula + "VALOR = " + emprestimo.getValor() + virgula + "ATRASO = " + emprestimo.getDiasAtraso()
-				+  " WHERE ID = " + emprestimo.getId();
-
-		System.out.println("tentativa de editar" + query);
+				+ " WHERE ID = " + emprestimo.getId();
 
 		try {
 			this.conexao.createStatement().executeUpdate(query);
@@ -90,7 +97,7 @@ public class EmprestimoDAO {
 
 	}
 
-	//realiza inserção de cliente 
+	// realiza inserção de cliente
 	public void inserirCliente(Emprestimo emprestimo) {
 		this.conexao = abreConexaoBD();
 		String query, virgula = ",", isString = "'";
@@ -100,7 +107,6 @@ public class EmprestimoDAO {
 				+ isString + emprestimo.getDataNascimento() + isString + virgula + emprestimo.getValor() + virgula
 				+ isString + emprestimo.getTelefone() + isString + virgula + isString + emprestimo.getSexo() + isString
 				+ virgula + emprestimo.getDiasAtraso() + ");";
-		System.out.println("tentativa de inclusão " + query);
 
 		try {
 			this.conexao.createStatement().executeUpdate(query);
@@ -113,16 +119,15 @@ public class EmprestimoDAO {
 
 	}
 
-	//retorma busca baseando em uma condição por nome ou cpf
+	// retorma busca baseando em uma condição por nome ou cpf
 	public ArrayList<Emprestimo> buscaClientes(String condicao) throws SQLException {
-		
+
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
 		this.conexao = abreConexaoBD();
 
 		String query;
 		query = "SELECT * FROM EMPRESTIMO WHERE  (NOME LIKE '%" + condicao + "%' OR CPF LIKE '%" + condicao
 				+ "%') ORDER BY NOME";
-		System.out.println("tentando executar" + query);
 
 		ResultSet rs = this.conexao.createStatement().executeQuery(query);
 		while (rs.next()) {
@@ -145,15 +150,14 @@ public class EmprestimoDAO {
 
 	}
 
-	//Retorna array com dados de um cliente especifico 
-	public ArrayList<Emprestimo> buscaClientePorCpf(Emprestimo emprestimoN) throws SQLException {
+	// Retorna array com dados de um cliente especifico
+	public ArrayList<Emprestimo> buscaClientePorCpf(Emprestimo emp) throws SQLException {
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
 		this.conexao = abreConexaoBD();
 
 		String query, isString = "'";
 
-		query = "SELECT * FROM EMPRESTIMO WHERE  CPF = " + isString + emprestimoN.getCpf() + isString + ";";
-		System.out.println("tentando executar" + query);
+		query = "SELECT * FROM EMPRESTIMO WHERE  CPF = " + isString + emp.getCpf() + isString + ";";
 
 		ResultSet rs = this.conexao.createStatement().executeQuery(query);
 		while (rs.next()) {
