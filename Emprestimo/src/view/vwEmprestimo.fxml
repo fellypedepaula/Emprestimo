@@ -22,10 +22,10 @@
             <Label layoutX="416.0" layoutY="138.0" prefHeight="31.0" prefWidth="79.0" text="Telefone" />
             <TextField fx:id="txtNome" layoutX="134.0" layoutY="111.0" prefHeight="25.0" prefWidth="259.0" />
             <TextField fx:id="txtEmail" layoutX="135.0" layoutY="141.0" prefHeight="25.0" prefWidth="259.0" />
-            <DatePicker fx:id="txtDate" layoutX="134.0" layoutY="177.0" onKeyReleased="#onReleasedData" prefHeight="25.0" prefWidth="133.0" />
+            <DatePicker fx:id="txtDate" editable="false" layoutX="134.0" layoutY="177.0" prefHeight="25.0" prefWidth="133.0" />
             <TextField fx:id="txtCpf" layoutX="135.0" layoutY="213.0" onKeyReleased="#onReleasedCpf" prefHeight="25.0" prefWidth="133.0" />
             <TextField fx:id="txtSalario" layoutX="502.0" layoutY="112.0" onKeyReleased="#onReleasedSalario" prefHeight="25.0" prefWidth="106.0" />
-            <TextField fx:id="txtTelefone" layoutX="503.0" layoutY="141.0" onKeyReleased="#onReleasedTelefone" prefHeight="25.0" prefWidth="106.0" />
+            <TextField fx:id="txtTelefone" layoutX="503.0" layoutY="141.0" onKeyPressed="#onReleasedTelefone" prefHeight="25.0" prefWidth="106.0" />
             <TextField fx:id="txtValor" layoutX="502.0" layoutY="170.0" onKeyReleased="#onReleasedValor" prefHeight="25.0" prefWidth="106.0" />
             <TextField fx:id="txtAtraso" layoutX="502.0" layoutY="201.0" prefHeight="25.0" prefWidth="106.0" />
             <Label layoutX="414.0" layoutY="230.0" text="Sexo" />
@@ -34,10 +34,10 @@
             <Label layoutX="416.0" layoutY="174.0" text="Valor" />
             <TableView fx:id="tabela" editable="true" layoutX="14.0" layoutY="272.0" onMouseClicked="#clickItem" prefHeight="251.0" prefWidth="702.0">
               <columns>
-                <TableColumn fx:id="colunaNome" prefWidth="287.0" text="Nome" />
-                <TableColumn fx:id="colunaCpf" minWidth="0.0" prefWidth="175.0" text="Cpf" />
-                  <TableColumn fx:id="colunaDivida" prefWidth="96.0" text="Valor" />
-                  <TableColumn fx:id="colunaTelefone" prefWidth="143.0" text="Telefone" />
+                <TableColumn fx:id="colunaNome" prefWidth="287.0" style="-fx-alignment: CENTER-LEFT;" text="Nome" />
+                <TableColumn fx:id="colunaCpf" minWidth="0.0" prefWidth="175.0" style="-fx-alignment: CENTER;" text="Cpf" />
+                  <TableColumn fx:id="colunaDivida" prefWidth="96.0" style="-fx-alignment: CENTER;" text="Valor" />
+                  <TableColumn fx:id="colunaTelefone" prefWidth="143.0" style="-fx-alignment: CENTER;" text="Telefone" />
               </columns>
             </TableView>
             <Label layoutX="414.0" layoutY="208.0" text="Dias em Atraso" />

@@ -15,8 +15,8 @@ public class EmprestimoDAO {
 	private String host = "localhost:3306";
 	private String dbName = "emprestimo";
 	private String timeZone = "America/Sao_Paulo";
-//	private String url = "jdbc:mysql://" + host + "/" + dbName + "?useTimezone=true&serverTimezone=UTC";
-	private String url = "jdbc:mysql://" + host + "/" + dbName + "?useTimezone=true&serverTimezone=" + timeZone;
+	private String url = "jdbc:mysql://" + host + "/" + dbName + "?useTimezone=true&serverTimezone=" + timeZone; //para retornar mesma data e hora no padrão da versão do mysql instalado
+
 
 	public Connection conexao = null;
 
@@ -47,6 +47,7 @@ public class EmprestimoDAO {
 
 	}
 
+	//delete um cliente da base de dados
 	public void deletaCliente(int id) {
 		this.conexao = abreConexaoBD();
 		String query;
@@ -61,6 +62,7 @@ public class EmprestimoDAO {
 		}
 	}
 
+	//atualiza o cadastro de um cliente
 	public void atualizaCliente(Emprestimo emprestimo) {
 		this.conexao = abreConexaoBD();
 
@@ -88,6 +90,7 @@ public class EmprestimoDAO {
 
 	}
 
+	//realiza inserção de cliente 
 	public void inserirCliente(Emprestimo emprestimo) {
 		this.conexao = abreConexaoBD();
 		String query, virgula = ",", isString = "'";
@@ -110,6 +113,7 @@ public class EmprestimoDAO {
 
 	}
 
+	//retorma busca baseando em uma condição por nome ou cpf
 	public ArrayList<Emprestimo> buscaClientes(String condicao) throws SQLException {
 		
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
@@ -141,6 +145,7 @@ public class EmprestimoDAO {
 
 	}
 
+	//Retorna array com dados de um cliente especifico 
 	public ArrayList<Emprestimo> buscaClientePorCpf(Emprestimo emprestimoN) throws SQLException {
 		ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
 		this.conexao = abreConexaoBD();

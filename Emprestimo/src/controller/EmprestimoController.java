@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +26,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import model.Emprestimo;
 import model.EmprestimoNegocio;
+import utilitarios.ValidaCPF;
 
 public class EmprestimoController implements Initializable {
 
@@ -81,44 +84,48 @@ public class EmprestimoController implements Initializable {
 	@FXML
 	private TextField txtSexo;
 
-	@FXML
+	@FXML // capturando evento do mouse
 	void clickItem(MouseEvent event) {
-		if (event.getClickCount() == 1) // Checking double click
+
+		if (event.getClickCount() == 1)// verificando quantidade de cliques do mouse sobre tableview
 		{
 
-			Emprestimo emprestimo = new Emprestimo();
-			emprestimo.setId(tabela.getSelectionModel().getSelectedItem().getId());
-			emprestimo.setCpf(tabela.getSelectionModel().getSelectedItem().getCpf());
-			emprestimo.setNome(tabela.getSelectionModel().getSelectedItem().getNome());
-			emprestimo.setEmail(tabela.getSelectionModel().getSelectedItem().getEmail());
-			emprestimo.setSalario(tabela.getSelectionModel().getSelectedItem().getSalario());
-			emprestimo.setTelefone(tabela.getSelectionModel().getSelectedItem().getTelefone());
-			emprestimo.setValor(tabela.getSelectionModel().getSelectedItem().getValor());
-			emprestimo.setDiasAtraso(tabela.getSelectionModel().getSelectedItem().getDiasAtraso());
-			emprestimo.setSexo(tabela.getSelectionModel().getSelectedItem().getSexo());
-			emprestimo.setDataNascimento(tabela.getSelectionModel().getSelectedItem().getDataNascimento());
-			preencherFormulario(emprestimo);
+			if (tabela.getItems().size() > 0) { // verificando se existe ao menos um registro na tableview
+				Emprestimo emprestimo = new Emprestimo();
+				emprestimo.setId(tabela.getSelectionModel().getSelectedItem().getId());
+				emprestimo.setCpf(tabela.getSelectionModel().getSelectedItem().getCpf());
+				emprestimo.setNome(tabela.getSelectionModel().getSelectedItem().getNome());
+				emprestimo.setEmail(tabela.getSelectionModel().getSelectedItem().getEmail());
+				emprestimo.setSalario(tabela.getSelectionModel().getSelectedItem().getSalario());
+				emprestimo.setTelefone(tabela.getSelectionModel().getSelectedItem().getTelefone());
+				emprestimo.setValor(tabela.getSelectionModel().getSelectedItem().getValor());
+				emprestimo.setDiasAtraso(tabela.getSelectionModel().getSelectedItem().getDiasAtraso());
+				emprestimo.setSexo(tabela.getSelectionModel().getSelectedItem().getSexo());
+				emprestimo.setDataNascimento(tabela.getSelectionModel().getSelectedItem().getDataNascimento());
+				preencherFormulario(emprestimo);
+			}
 		}
+
 	}
 
-	@FXML
+	@FXML // capturando clique do checkbox sexo Feminino
 	void onCliqueF(MouseEvent event) {
 		isHomem.setSelected(false);
 		isMulher.setSelected(true);
 		txtSexo.setText("F");
 	}
 
-	@FXML
+	@FXML // capturando clique do checkbox sexo masculino
 	void onCliqueM(MouseEvent event) {
 		isHomem.setSelected(true);
 		isMulher.setSelected(false);
 		txtSexo.setText("M");
 	}
 
-	@FXML
+	@FXML // ação de excluir um cliente selecionado
 	void onExcluir(ActionEvent event) throws SQLException {
 		Alert alert = new Alert(AlertType.INFORMATION);
-		
+
 		System.out.println("estado ao clicar direto" + txtIdForm.getText());
 
 		if (txtIdForm.getText() == null && !"".equals(txtIdForm.getText())) {
@@ -145,15 +152,17 @@ public class EmprestimoController implements Initializable {
 		}
 	}
 
-	@FXML
+	@FXML // limpar o formulario e setar foco do cursos para o campo Nome
 	void onInserirNovo(ActionEvent event) {
 		limparFormulario();
 		txtNome.requestFocus();
 	}
 
+	// Obejto onde ficam os registros obtidos na consulta de listar e mantidos em
+	// arraylist, dados da tableview
 	ObservableList<Emprestimo> oblist = FXCollections.observableArrayList();
 
-	@FXML
+	@FXML // realizar pesquisas baseada em nome ou cpf
 	void onPesquisar(KeyEvent event) {
 		try {
 			listarClientes();
@@ -162,96 +171,110 @@ public class EmprestimoController implements Initializable {
 		}
 	}
 
-	@FXML
+	@FXML //
 	void onReleasedCpf(KeyEvent event) {
-		utilitarios.Util tff = new utilitarios.Util();
-		tff.setMask("###-###-###.##");
-		tff.setCaracteresValidos("0123456789");
-		tff.setTf(txtCpf);
-		tff.formatter();
-	}
-
-	@FXML
-	void onReleasedData(KeyEvent event) {
-
+		if (txtCpf.getText() != null && "".equals(txtCpf.getText())) {
+			utilitarios.Util tff = new utilitarios.Util();
+			tff.setMask("###-###-###.##");
+			tff.setCaracteresValidos("0123456789");
+			tff.setTf(txtCpf);
+			tff.formatter();
+		}
 	}
 
 	@FXML
 	void onReleasedSalario(KeyEvent event) {
-		utilitarios.Util tff = new utilitarios.Util();
-		tff.setMask("#####.##");
-		tff.setCaracteresValidos("0123456789");
-		tff.setTf(txtSalario);
-		tff.formatter();
+//		utilitarios.Util tff = new utilitarios.Util();
+//		tff.setCaracteresValidos("0123456789");
+//		tff.setMask("##,###.##");
+//		tff.setTf(txtSalario);
+//		tff.formatter();
+
 	}
 
 	@FXML
 	void onReleasedTelefone(KeyEvent event) {
-		utilitarios.Util tff = new utilitarios.Util();
-		tff.setMask("(##)#####-####");
-		tff.setCaracteresValidos("0123456789");
-		tff.setTf(txtTelefone);
-		tff.formatter();
+		if (txtTelefone.getText() != null && "".equals(txtTelefone.getText())) {
+			utilitarios.Util tff = new utilitarios.Util();
+			tff.setMask("(##)#####-####");
+			tff.setCaracteresValidos("0123456789");
+			tff.setTf(txtTelefone);
+			tff.formatter();
+		}
 	}
 
 	@FXML
 	void onReleasedValor(KeyEvent event) {
-		utilitarios.Util tff = new utilitarios.Util();
-		tff.setMask("#####.##");
-		tff.setCaracteresValidos("0123456789");
-		tff.setTf(txtValor);
-		tff.formatter();
+//		utilitarios.Util tff = new utilitarios.Util();
+//		tff.setCaracteresValidos("0123456789");
+//		tff.setMask("##,###.##");
+//		tff.setTf(txtValor);
+//		tff.formatter();
 	}
 
 	@FXML
 	void onSalvar(ActionEvent event) throws SQLException {
-		Alert alert;
 		if (validaFormulario()) {
-			EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
-			Emprestimo emprestimo = new Emprestimo();
-			ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
-			alert = new Alert(AlertType.CONFIRMATION);
-			java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(txtDate.getValue());
-			emprestimo.setCpf(retiraCaracteresEspeciais(txtCpf.getText()));
-			emprestimo.setNome(txtNome.getText());
-			emprestimo.setEmail(txtEmail.getText());
-			emprestimo.setDataNascimento(gettedDatePickerDate);
-			emprestimo.setSalario(Float.valueOf(txtSalario.getText()));
-			emprestimo.setTelefone(retiraCaracteresEspeciais(txtTelefone.getText()));
-			emprestimo.setValor(Float.valueOf(txtValor.getText()));
-			emprestimo.setSexo(txtSexo.getText());
-			emprestimo.setDiasAtraso(Integer.valueOf(txtAtraso.getText()));
+			if (isNomeValido()) {
+				if (isEmailValido()) {
+					if (validaCPF()) {
+						if (isDiasAtrasoValido()) {
+							if (isSexoValido()) {
+								if (isTelefone()) {
+									Alert alert;
+									EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
+									Emprestimo emprestimo = new Emprestimo();
+									ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
+									alert = new Alert(AlertType.CONFIRMATION);
+									java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(txtDate.getValue());
+									emprestimo.setCpf(retiraCaracteresEspeciais(txtCpf.getText()));
+									emprestimo.setNome(txtNome.getText());
+									emprestimo.setEmail(txtEmail.getText());
+									emprestimo.setDataNascimento(gettedDatePickerDate);
+									emprestimo.setSalario(Float.valueOf(txtSalario.getText().replaceAll(",", "")));
+									emprestimo.setTelefone(retiraCaracteresEspeciais(txtTelefone.getText()));
+									emprestimo.setValor(Float.valueOf(txtValor.getText().replaceAll(",", "")));
+									emprestimo.setSexo(txtSexo.getText());
+									emprestimo.setDiasAtraso(Integer.valueOf(txtAtraso.getText()));
 
-			arrayList = emprestimoNegocio.buscarClientePorCpf(emprestimo);
+									arrayList = emprestimoNegocio.buscarClientePorCpf(emprestimo);
 
-			if (arrayList.isEmpty()) {
-				emprestimoNegocio.inserirCliente(emprestimo);
+									if (arrayList.isEmpty()) {
+										emprestimoNegocio.inserirCliente(emprestimo);
 
-			} else {
-				emprestimo.setId(Integer.parseInt(txtIdForm.getText()));
+									} else {
+										emprestimo.setId(Integer.parseInt(txtIdForm.getText()));
 
-				alert.setTitle("Ciência de operação");
-				alert.setContentText("O CPF informado já existe em nossa base de dados, deseja atualizar o cadastro?");
+										alert.setTitle("Ciência de operação");
+										alert.setContentText(
+												"O CPF informado já existe em nossa base de dados, deseja atualizar o cadastro?");
 
-				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == ButtonType.OK) {
-					emprestimoNegocio.editarCliente(emprestimo);
-					alert = new Alert(AlertType.INFORMATION);
-					alert.setContentText("Cadastro atualizado com sucesso!");
-					alert.showAndWait();
-				} else {
-					alert = new Alert(AlertType.INFORMATION);
-					alert.setContentText("Operação cancelada com sucesso!");
-					alert.showAndWait();
+										Optional<ButtonType> result = alert.showAndWait();
+										if (result.get() == ButtonType.OK) {
+											emprestimoNegocio.editarCliente(emprestimo);
+											alert = new Alert(AlertType.INFORMATION);
+											alert.setContentText("Cadastro atualizado com sucesso!");
+											alert.showAndWait();
+										} else {
+											alert = new Alert(AlertType.INFORMATION);
+											alert.setContentText("Operação cancelada com sucesso!");
+											alert.showAndWait();
+										}
+									}
+
+									listarClientes();
+								}
+							}
+						}
+					}
 				}
 			}
-
-			listarClientes();
 		}
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		txtDate.setEditable(false);
 
 		try {
 			listarClientes();
@@ -294,6 +317,7 @@ public class EmprestimoController implements Initializable {
 		colunaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
 		colunaCpf.setCellValueFactory(new PropertyValueFactory<>("cpf"));
 		colunaDivida.setCellValueFactory(new PropertyValueFactory<>("valor"));
+
 	}
 
 	public boolean validaFormulario() {
@@ -303,16 +327,26 @@ public class EmprestimoController implements Initializable {
 				+ txtValor.getText() + "atraso  " + txtAtraso.getText() + "data  " + txtDate.getPromptText()
 				+ "ishomem  " + !isHomem.isSelected() + "isMulher  " + !isMulher.isSelected());
 
-		if ((txtNome.getText().isEmpty()) || (txtEmail.getText().isEmpty()) || (txtCpf.getText().isEmpty())
-				|| (txtSalario.getText().isEmpty()) || (txtSalario.getText().isEmpty())
-				|| (txtTelefone.getText().isEmpty()) || (txtValor.getText().isEmpty())
-				|| (txtAtraso.getText().isEmpty()) || (txtDate.getValue() == null)
-				|| (!isHomem.isSelected() && (!isMulher.isSelected()))) {
+//!"".equals(txtIdForm.getText()
+
+		if (
+
+		(txtNome.getText() == null && "".equals(txtNome.getText()))
+				|| (txtEmail.getText() == null && !"".equals(txtNome.getText()))
+				|| (txtCpf.getText() == null && !"".equals(txtNome.getText()))
+				|| (txtSalario.getText() == null && !"".equals(txtNome.getText()))
+				|| (txtSalario.getText() == null && !"".equals(txtNome.getText()))
+				|| (txtTelefone.getText() == null && !"".equals(txtNome.getText()))
+				|| (txtValor.getText() == null && !"".equals(txtNome.getText()))
+				|| (txtAtraso.getText() == null && !"".equals(txtNome.getText()))
+				|| (txtDate.getValue() == null && !"".equals(txtNome.getText()))
+				|| (!isHomem.isSelected() && (!isMulher.isSelected()))
+
+		) {
 
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setContentText("Todos os Campos devem estar devidamente preenchidos!");
 			alert.showAndWait();
-
 			return false;
 		} else {
 			return true;
@@ -321,12 +355,15 @@ public class EmprestimoController implements Initializable {
 	}
 
 	public void preencherFormulario(Emprestimo emprestimo) {
+		utilitarios.Util tff = new utilitarios.Util();
+		tff.setCaracteresValidos("0123456789");
 
 		String data = emprestimo.getDataNascimento().toString();
 		int ano, mes, dia;
 		ano = Integer.parseInt(data.substring(0, 4));
 		mes = Integer.parseInt(data.substring(5, 7));
 		dia = Integer.parseInt(data.substring(8, 10));
+
 		txtIdForm.setText(String.valueOf(emprestimo.getId()));
 		txtNome.setText(emprestimo.getNome());
 		txtEmail.setText(emprestimo.getEmail());
@@ -337,6 +374,14 @@ public class EmprestimoController implements Initializable {
 		txtValor.setText(String.valueOf(emprestimo.getValor()));
 		txtAtraso.setText(String.valueOf(emprestimo.getDiasAtraso()));
 		verificaSexo(emprestimo.getSexo().toString());
+
+		tff.setMask("###-###-###.##");
+		tff.setTf(txtCpf);
+		tff.formatter();
+
+		tff.setMask("(##)#####-#####");
+		tff.setTf(txtTelefone);
+		tff.formatter();
 	}
 
 	public void limparFormulario() {
@@ -369,8 +414,100 @@ public class EmprestimoController implements Initializable {
 	}
 
 	public String retiraCaracteresEspeciais(String text) {
-		text = text.replaceAll("[^a-zZ-Z1-9 ]", "");
+		text = text.replaceAll("([^a-zZ-Z0-9 ])", "");
+		text = text.replaceAll(" ", "");
 		return text;
+	}
+
+	public boolean validaCPF() {
+		if (ValidaCPF.isCPF(retiraCaracteresEspeciais(txtCpf.getText()))) {
+			return true;
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Cpf Invalido!");
+			alert.showAndWait();
+			return false;
+		}
+	}
+
+	public boolean isTelefone() {
+		String numeroTelefone = txtTelefone.getText().toString();
+		numeroTelefone = numeroTelefone.replaceAll(" ", "");
+		if (numeroTelefone.matches("\\(\\d{2}\\)\\d{4,5}-\\d{4}")) {
+			return true;
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Telefone Invalido!");
+			alert.showAndWait();
+			return false;
+		}
+	}
+
+//	public boolean isValorDecimal() {
+//		String renda = txtSalario.getText().toString();
+//		String valor = txtValor.getText().toString();
+//		renda = renda.replaceAll(",", "");
+//		valor = valor.replaceAll(",", "");
+//		if (renda.length() == 8 && valor.length() == 8) {
+//			return true;
+//		} else {
+//			Alert alert = new Alert(AlertType.ERROR);
+//			alert.setContentText("Valor da renda ou dívida fora do padrão, por gentileza adeque #####.## !");
+//			alert.showAndWait();
+//			return false;
+//		}
+//	}
+
+	boolean isNomeValido() {
+		if (txtNome.getText().matches("[a-zA-Z\\s]+")) {
+			return true;
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("O Nome só pode conter letras  !");
+			alert.showAndWait();
+			return false;
+		}
+	}
+
+	boolean isDiasAtrasoValido() {
+		try {
+			Integer.parseInt((txtAtraso.getText()));
+			return true;
+		} catch (NumberFormatException e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Quantidade de dias de atraso e um numero não decimal!");
+			alert.showAndWait();
+			return false;
+		}
+	}
+
+	boolean isSexoValido() {
+		if (!isHomem.isSelected() && (!isMulher.isSelected())) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Quantidade de dias de atraso e um numero não decimal!");
+			alert.showAndWait();
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	// 1- Não possuir espaços.
+	// 2- Possuir o @.
+	// 3- Possuir algum caracter após o @.
+	// 4- Possuir pelo menos um ponto após o @.
+	boolean isEmailValido() {
+		Pattern p = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,3}$");
+		Matcher m = p.matcher(txtEmail.getText().trim());
+		if (!m.find()) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Email inválido!");
+			alert.showAndWait();
+			return false;
+		} else {
+			return true;
+		}
+
 	}
 
 }
