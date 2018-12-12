@@ -126,8 +126,6 @@ public class EmprestimoController implements Initializable {
 	void onExcluir(ActionEvent event) throws SQLException {
 		Alert alert = new Alert(AlertType.INFORMATION);
 
-		System.out.println("estado ao clicar direto" + txtIdForm.getText());
-
 		if (txtIdForm.getText() == null && !"".equals(txtIdForm.getText())) {
 			alert.setContentText("Selecione um registro para que possa ser excluído!");
 			alert.showAndWait();
@@ -173,7 +171,7 @@ public class EmprestimoController implements Initializable {
 
 	@FXML // setando mascara do cpf no momento em que o usuário está digitando
 	void onReleasedCpf(KeyEvent event) {
-		if (txtCpf.getText() != null && "".equals(txtCpf.getText())) {
+		if (txtCpf.getText() != null && !"".equals(txtCpf.getText())) {
 			utilitarios.Util tff = new utilitarios.Util();
 			tff.setMask("###-###-###.##");
 			tff.setCaracteresValidos("0123456789");
@@ -194,7 +192,7 @@ public class EmprestimoController implements Initializable {
 
 	@FXML // setando mascara do telefone no momento em que o usuário está digitando
 	void onReleasedTelefone(KeyEvent event) {
-		if (txtTelefone.getText() != null && "".equals(txtTelefone.getText())) {
+		if (txtTelefone.getText() != null && !"".equals(txtTelefone.getText())) {
 			utilitarios.Util tff = new utilitarios.Util();
 			tff.setMask("(##)#####-####");
 			tff.setCaracteresValidos("0123456789");
@@ -319,8 +317,6 @@ public class EmprestimoController implements Initializable {
 			emprestimo.setSexo(arrayList.get(i).getSexo());
 			emprestimo.setDiasAtraso(arrayList.get(i).getDiasAtraso());
 			emprestimo.setDataNascimento(arrayList.get(i).getDataNascimento());
-			System.out.println("data" + arrayList.get(i).getDataNascimento());
-
 			oblist.add(emprestimo);
 			tabela.setItems(oblist);
 		}
