@@ -222,55 +222,58 @@ public class EmprestimoController implements Initializable {
 					if (validaCPF()) {
 						if (isDiasAtrasoValido()) {
 							if (isSexoValido()) {
-								if (isTelefone()) {
-									Alert alert;
-									EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
-									Emprestimo emprestimo = new Emprestimo();
-									ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
-									alert = new Alert(AlertType.CONFIRMATION);
-									java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(txtDate.getValue());
-									emprestimo.setCpf(retiraCaracteresEspeciais(txtCpf.getText()));
-									emprestimo.setNome(txtNome.getText());
-									emprestimo.setEmail(txtEmail.getText());
-									emprestimo.setDataNascimento(gettedDatePickerDate);
-									emprestimo.setSalario(Float.valueOf(txtSalario.getText().replaceAll(",", "")));
-									emprestimo.setTelefone(retiraCaracteresEspeciais(txtTelefone.getText()));
-									emprestimo.setValor(Float.valueOf(txtValor.getText().replaceAll(",", "")));
-									emprestimo.setSexo(txtSexo.getText());
-									emprestimo.setDiasAtraso(Integer.valueOf(txtAtraso.getText()));
+								if (isCamposMoeda()) {
+									if (isTelefone()) {
+										Alert alert;
+										EmprestimoNegocio emprestimoNegocio = new EmprestimoNegocio();
+										Emprestimo emprestimo = new Emprestimo();
+										ArrayList<Emprestimo> arrayList = new ArrayList<Emprestimo>();
+										alert = new Alert(AlertType.CONFIRMATION);
+										java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(txtDate.getValue());
+										emprestimo.setCpf(retiraCaracteresEspeciais(txtCpf.getText()));
+										emprestimo.setNome(txtNome.getText());
+										emprestimo.setEmail(txtEmail.getText());
+										emprestimo.setDataNascimento(gettedDatePickerDate);
+										emprestimo.setSalario(Float.valueOf(txtSalario.getText().replaceAll(",", ".")));
+										emprestimo.setTelefone(retiraCaracteresEspeciais(txtTelefone.getText()));
+										emprestimo.setValor(Float.valueOf(txtValor.getText().replaceAll(",", ".")));
+										emprestimo.setSexo(txtSexo.getText());
+										emprestimo.setDiasAtraso(Integer.valueOf(txtAtraso.getText()));
 
-									arrayList = emprestimoNegocio.buscarClientePorCpf(emprestimo); // realizando
-																									// consulta do cpf
-																									// informado
+										arrayList = emprestimoNegocio.buscarClientePorCpf(emprestimo); // realizando
+																										// consulta do
+																										// cpf
+																										// informado
 
-									if (arrayList.isEmpty()) {
-										emprestimoNegocio.inserirCliente(emprestimo); // registro novo, realizando
-																						// inserção
+										if (arrayList.isEmpty()) {
+											emprestimoNegocio.inserirCliente(emprestimo); // registro novo, realizando
+																							// inserção
 
-									} else {
-										emprestimo.setId(Integer.parseInt(txtIdForm.getText()));
-
-										alert.setTitle("Ciência de operação");
-										alert.setContentText(
-												"O CPF informado já existe em nossa base de dados, deseja atualizar o cadastro?");
-
-										Optional<ButtonType> result = alert.showAndWait();
-										if (result.get() == ButtonType.OK) {
-											emprestimoNegocio.editarCliente(emprestimo); // registro já existente,
-																							// atualizando os dados
-																							// através das novas
-																							// informações
-											alert = new Alert(AlertType.INFORMATION);
-											alert.setContentText("Cadastro atualizado com sucesso!");
-											alert.showAndWait();
 										} else {
-											alert = new Alert(AlertType.INFORMATION);
-											alert.setContentText("Operação cancelada com sucesso!");
-											alert.showAndWait();
-										}
-									}
+											emprestimo.setId(Integer.parseInt(txtIdForm.getText()));
 
-									listarClientes();
+											alert.setTitle("Ciência de operação");
+											alert.setContentText(
+													"O CPF informado já existe em nossa base de dados, deseja atualizar o cadastro?");
+
+											Optional<ButtonType> result = alert.showAndWait();
+											if (result.get() == ButtonType.OK) {
+												emprestimoNegocio.editarCliente(emprestimo); // registro já existente,
+																								// atualizando os dados
+																								// através das novas
+																								// informações
+												alert = new Alert(AlertType.INFORMATION);
+												alert.setContentText("Cadastro atualizado com sucesso!");
+												alert.showAndWait();
+											} else {
+												alert = new Alert(AlertType.INFORMATION);
+												alert.setContentText("Operação cancelada com sucesso!");
+												alert.showAndWait();
+											}
+										}
+
+										listarClientes();
+									}
 								}
 							}
 						}
@@ -483,10 +486,39 @@ public class EmprestimoController implements Initializable {
 	boolean isDiasAtrasoValido() {
 		try {
 			Integer.parseInt((txtAtraso.getText()));
-			return true;
+			if(Integer.parseInt((txtAtraso.getText())) > 0) {
+				return true;
+			}else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setContentText("Quantidade de dias de atraso não pode ser negativo!");
+				alert.showAndWait();
+				return false;
+			}
 		} catch (NumberFormatException e) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText("Quantidade de dias de atraso e um numero não decimal!");
+			alert.showAndWait();
+			return false;
+		}
+	}
+
+	// validando se o campo valor do formuário foi informado corretamente como
+	// flutuante
+	boolean isCamposMoeda() {
+		try {
+			Float.parseFloat((txtValor.getText()));
+			Float.parseFloat((txtSalario.getText()));
+			if (Float.parseFloat((txtValor.getText())) > 0 && Float.parseFloat((txtSalario.getText())) > 0) {
+				return true;
+			} else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setContentText("Valor de salário ou dívia incorreto, por gentileza respeite o padrão ###.#!");
+				alert.showAndWait();
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Valor de salário ou dívia incorreto, por gentileza respeite o padrão ###.#!");
 			alert.showAndWait();
 			return false;
 		}
